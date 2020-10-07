@@ -2,9 +2,8 @@ package model
 
 // Pubsub represents PubSub component
 type Pubsub struct {
-	ComponentType string `yaml:"ComponentType"`
-	ComponentName string `yaml:"ComponentName"`
-	TopicName     string `yaml:"TopicName"`
+	Component
+	TopicName string `yaml:"TopicName"`
 }
 
 // PubsubComponentTypes lists all supported components

@@ -15,11 +15,18 @@ import (
 	{{- else}}
 	daprd "github.com/dapr/go-sdk/service/http"
 	{{- end}}
+	{{- if .NeedsClient}}
+	dapr "github.com/dapr/go-sdk/client"
+	{{- end}}
 )
 
 var (
 	logger     = log.New(os.Stdout, "", 0)
 	address    = getEnvVar("ADDRESS", ":{{.Port}}")
+	
+	{{- if .NeedsClient}}
+	client dapr.Client
+	{{- end}}
   
 	{{- range $i, $v := .Pubsubs}}
 	pubSubName{{$i}} = getEnvVar("PUBSUB_NAME_{{$i}}", "{{$v.ComponentName}}")
@@ -37,10 +44,20 @@ func main() {
 	{{- else}}
 	s := daprd.NewService(address)
 	{{- end}}
+	{{- if .NeedsClient}}
+	// create Dapr client
+	c, err := dapr.NewClient()
+	if err != nil {
+		log.Fatalf("error creating Dapr client: %v", err)
+	}
+	client = c
+	defer client.Close()
+	{{- end}}
 
-	// add some topic subscriptions
+
+
   	{{- range $i, $v := .Pubsubs}}
-	// subscription {{$i}}
+	// add topic subscriptions {{$i}}
 	sub{{$i}} := &common.Subscription{
 		PubsubName: pubSubName{{$i}},
 		Topic:      topicName{{$i}},
@@ -48,13 +65,29 @@ func main() {
 		Route:      fmt.Sprintf("/%s", topicName),
 		{{- end}}
 	}
-	if err := s.AddTopicEventHandler(sub{{$i}}, eventHandler); err != nil {
+	if err := s.AddTopicEventHandler("sub{{$i}}", eventHandler); err != nil {
 		logger.Fatalf("error adding subscription {{$i}}: %v", err)
 	}
 
   	{{- end}}
 
-	// start the server to handle incoming events
+	{{- range $i, $v := .Bindings}}
+	// add input bindings {{$i}}
+	if err := s.AddBindingInvocationHandler("{{$v.ComponentName}}", inputHandler); err != nil {
+		logger.Fatalf("error adding {{$v.ComponentName}} binding handler: %v", err)
+	}
+
+  	{{- end}}
+
+	{{- range $i, $v := .Services}}
+	// add invocation handler {{$i}}
+	if err := s.AddServiceInvocationHandler("{{$v.Name}}", invokeHandler); err != nil {
+		log.Fatalf("error adding {{$v.Name}} invocation handler: %v", err)
+	}
+
+  	{{- end}}
+
+	// start the server
 	{{- if eq .Protocol "gRPC"}}
   	if err := s.Start(); err != nil {
 		log.Fatalf("server error: %v", err)
@@ -66,6 +99,7 @@ func main() {
 	{{- end}}
 }
 
+{{ $length := len .Pubsubs }} {{- if gt $length 0 }}
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
 	logger.Printf(
 		"event - PubsubName:%s, Topic:%s, ID:%s, Data: %v",
@@ -76,6 +110,35 @@ func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err er
 
 	return false, nil
 }
+{{- end}}
+
+{{ $length := len .Bindings }} {{- if gt $length 0 }}
+func inputHandler(ctx context.Context, in *common.BindingEvent) (out []byte, err error) {
+	logger.Printf("Binding - Metadata:%v, Data:%v", in.Metadata, in.Data)
+
+	// TODO: do something with the cloud event data
+
+	return nil, nil
+}
+{{- end}}
+
+
+{{ $length := len .Services }} {{- if gt $length 0 }}
+func invokeHandler(ctx context.Context, in *common.InvocationEvent) (out *common.Content, err error) {
+	logger.Printf("Invocation (ContentType:%s, Verb:%s, QueryString:%s, Data:%s)",
+		in.ContentType, in.Verb, in.QueryString, string(in.Data))
+
+	// TODO: implement handling logic here
+
+	out = &common.Content{
+		ContentType: in.ContentType,
+		Data:        in.Data,
+	}
+
+	return
+}
+{{- end}}
+
 
 func getEnvVar(key, fallbackValue string) string {
 	if val, ok := os.LookupEnv(key); ok {

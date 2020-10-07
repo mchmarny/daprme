@@ -22,7 +22,6 @@ func ForString(question, fallback string) (string, error) {
 		}
 
 		answer = strings.TrimSuffix(answer, "\n")
-
 		if answer == "" {
 			answer = fallback
 		}

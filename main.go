@@ -32,8 +32,8 @@ func main() {
 	}
 
 	if ok {
-		if err := writer.MakeMain(app, "./test/main.go"); err != nil {
-			fmt.Printf("Error writting main: %v", err)
+		if err := writer.Make(app); err != nil {
+			fmt.Printf("Error creating project: %v", err)
 			os.Exit(-1)
 		}
 	}

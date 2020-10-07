@@ -4,8 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
 
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
@@ -22,19 +20,8 @@ func ForPubSub() (*model.Pubsub, error) {
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		answer, err := reader.ReadString('\n')
-		if err != nil {
-			return nil, err
-		}
-
-		answer = strings.TrimSuffix(answer, "\n")
-
-		i, err := strconv.Atoi(answer)
-		if err != nil {
-			return nil, errors.Wrap(err, "input not a number")
-		}
-
-		if i < 0 || i > len(model.PubsubComponentTypes()) {
+		i := readInt(reader)
+		if i < 0 || i >= len(model.PubsubComponentTypes()) {
 			return nil, errors.Errorf("input out of range: %d", i)
 		}
 

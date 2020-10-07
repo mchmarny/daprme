@@ -15,7 +15,7 @@ test: test ## Tests the entire project
 	# go test -v -count=1 -run SpecificTestName ./...
 
 .PHONY: run
-run: clean tidy ## Runs uncompiled code 
+run: tidy ## Runs uncompiled code 
 	go run main.go
 
 .PHONY: build
@@ -35,7 +35,9 @@ tag: ## Creates release tag
 
 .PHONY: clean
 clean: ## Cleans bin and temp directories
-	rm -fr test/main.go
+	go clean
+	rm -fr ./vendor
+	rm -fr ./bin
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk \

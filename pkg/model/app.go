@@ -16,12 +16,14 @@ const (
 
 // App represents app state
 type App struct {
-	Name     string     `yaml:"Name"`
-	Protocol string     `yaml:"Protocol"`
-	Port     int        `yaml:"Port"`
-	Pubsubs  []*Pubsub  `yaml:"Pubsubs"`
-	Bindings []*Binding `yaml:"Bindings"`
-	Services []*Service `yaml:"Services"`
+	Name       string       `yaml:"Name"`
+	Protocol   string       `yaml:"Protocol"`
+	Port       int          `yaml:"Port"`
+	Pubsubs    []*Pubsub    `yaml:"Pubsubs"`
+	Bindings   []*Binding   `yaml:"Bindings"`
+	Services   []*Service   `yaml:"Services"`
+	UsesClient bool         `yaml:"UsesClient"`
+	Components []*Component `yaml:"Components"`
 }
 
 // Marshal serializes App to YAML
