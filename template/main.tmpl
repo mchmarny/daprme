@@ -1,0 +1,85 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"net/http"
+	"os"
+	"strings"
+
+	"github.com/dapr/go-sdk/service/common"
+	{{- if eq .Protocol "gRPC"}}
+  	daprd "github.com/dapr/go-sdk/service/grpc"
+	{{- else}}
+	daprd "github.com/dapr/go-sdk/service/http"
+	{{- end}}
+)
+
+var (
+	logger     = log.New(os.Stdout, "", 0)
+	address    = getEnvVar("ADDRESS", ":{{.Port}}")
+  
+	{{- range $i, $v := .Pubsubs}}
+	pubSubName{{$i}} = getEnvVar("PUBSUB_NAME_{{$i}}", "{{$v.ComponentName}}")
+	topicName{{$i}}  = getEnvVar("TOPIC_NAME_{{$i}}", "{{$v.TopicName}}")
+    {{- end}}
+)
+
+func main() {
+	// create Dapr service
+	{{- if eq .Protocol "gRPC"}}
+  	s, err := daprd.NewService(serviceAddress)
+	if err != nil {
+		log.Fatalf("failed to start the server: %v", err)
+	}
+	{{- else}}
+	s := daprd.NewService(address)
+	{{- end}}
+
+	// add some topic subscriptions
+  	{{- range $i, $v := .Pubsubs}}
+	// subscription {{$i}}
+	sub{{$i}} := &common.Subscription{
+		PubsubName: pubSubName{{$i}},
+		Topic:      topicName{{$i}},
+		{{- if eq $.Protocol "HTTP"}}
+		Route:      fmt.Sprintf("/%s", topicName),
+		{{- end}}
+	}
+	if err := s.AddTopicEventHandler(sub{{$i}}, eventHandler); err != nil {
+		logger.Fatalf("error adding subscription {{$i}}: %v", err)
+	}
+
+  	{{- end}}
+
+	// start the server to handle incoming events
+	{{- if eq .Protocol "gRPC"}}
+  	if err := s.Start(); err != nil {
+		log.Fatalf("server error: %v", err)
+	}
+	{{- else}}
+	if err := s.Start(); err != nil && err != http.ErrServerClosed {
+		logger.Fatalf("error starting service: %v", err)
+	}
+	{{- end}}
+}
+
+func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
+	logger.Printf(
+		"event - PubsubName:%s, Topic:%s, ID:%s, Data: %v",
+		e.PubsubName, e.Topic, e.ID, e.Data,
+	)
+
+	// TODO: do something with the cloud event data
+
+	return false, nil
+}
+
+func getEnvVar(key, fallbackValue string) string {
+	if val, ok := os.LookupEnv(key); ok {
+		return strings.TrimSpace(val)
+	}
+	return fallbackValue
+}

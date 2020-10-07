@@ -1,4 +1,4 @@
-package maker
+package writer
 
 import (
 	"os"
@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	tmplPath = "template/app.tmpl"
+	tmplMainPath = "template/main.tmpl"
 )
 
-// Make creates app in specified path
-func Make(app *model.App, out string) error {
+// MakeMain creates app main in specified path
+func MakeMain(app *model.App, out string) error {
 	if app == nil {
 		return errors.New("invalid app input")
 	}
@@ -28,14 +28,14 @@ func Make(app *model.App, out string) error {
 	}
 	defer f.Close()
 
-	t, err := tmpl.ParseFiles(tmplPath)
+	t, err := tmpl.ParseFiles(tmplMainPath)
 	if err != nil {
-		return errors.Wrapf(err, "error parsing template: %s", tmplPath)
+		return errors.Wrapf(err, "error parsing template: %s", tmplMainPath)
 	}
 
 	err = t.Execute(f, app)
 	if err != nil {
-		return errors.Wrapf(err, "error executing template: %s", tmplPath)
+		return errors.Wrapf(err, "error executing template: %s", tmplMainPath)
 	}
 
 	return nil

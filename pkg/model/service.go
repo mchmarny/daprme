@@ -2,5 +2,5 @@ package model
 
 // Service represents Service invocations
 type Service struct {
-	Name string
+	Name string `yaml:"ComponentType"`
 }

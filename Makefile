@@ -15,11 +15,11 @@ test: test ## Tests the entire project
 	# go test -v -count=1 -run SpecificTestName ./...
 
 .PHONY: run
-run: test ## Runs uncompiled code 
+run: clean tidy ## Runs uncompiled code 
 	go run main.go
 
 .PHONY: build
-build: test ## Builds binaries
+build: tidy ## Builds binaries
 	CGO_ENABLED=0 go build -ldflags "-X main.Version=$(RELEASE_COMMIT)" \
     -mod vendor -o ../../demo/bin/$(APP_NAME) .
 	bash -c "cp -r ./template/ ../../demo/template/"
@@ -35,8 +35,7 @@ tag: ## Creates release tag
 
 .PHONY: clean
 clean: ## Cleans bin and temp directories
-	go clean
-	rm -fr ./bin
+	rm -fr test/main.go
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk \
