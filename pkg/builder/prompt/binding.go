@@ -20,7 +20,7 @@ func ForBinding() (*model.Binding, error) {
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		i := readInt(reader)
+		i := readInt(reader, 0)
 		if i < 0 || i >= len(model.InputBindingComponentTypes()) {
 			return nil, errors.Errorf("input out of range: %d", i)
 		}
@@ -29,11 +29,7 @@ func ForBinding() (*model.Binding, error) {
 	}
 
 	// comp name
-	compName, err := ForString("Component name: ", fmt.Sprintf("%s-pubsub", model.ToCodeSafeString(b.ComponentType)))
-	if err != nil {
-		return nil, errors.Errorf("unable to read input: %v", err)
-	}
-	b.ComponentName = compName
+	b.ComponentName = ForString("Component name: ", fmt.Sprintf("%s-pubsub", model.ToCodeSafeString(b.ComponentType)))
 
 	return b, nil
 }

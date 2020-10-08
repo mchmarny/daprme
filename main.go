@@ -25,13 +25,7 @@ func main() {
 	fmt.Println(app.String())
 	fmt.Println()
 
-	ok, err := prompt.ForBool("Create Dapr application?")
-	if err != nil {
-		fmt.Printf("Invalid input: %v", err)
-		os.Exit(-1)
-	}
-
-	if ok {
+	if prompt.ForBool("Create Dapr application?") {
 		if err := writer.Make(app); err != nil {
 			fmt.Printf("Error creating project: %v", err)
 			os.Exit(-1)

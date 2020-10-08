@@ -19,7 +19,7 @@ func ForComponents(list []string) ([]*model.Component, error) {
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		i := readInt(reader)
+		i := readInt(reader, 0)
 		if i < 0 || i >= len(list) {
 			return nil, errors.Errorf("input out of range: %d", i)
 		}
@@ -31,11 +31,7 @@ func ForComponents(list []string) ([]*model.Component, error) {
 
 		out = append(out, c)
 
-		more, err := ForBool("Add more?")
-		if err != nil {
-			return nil, errors.Errorf("unable to read input: %v", err)
-		}
-		if !more {
+		if !ForBool("Add more?") {
 			break
 		}
 	}

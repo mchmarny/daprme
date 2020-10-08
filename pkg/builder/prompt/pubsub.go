@@ -20,7 +20,7 @@ func ForPubSub() (*model.Pubsub, error) {
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		i := readInt(reader)
+		i := readInt(reader, 0)
 		if i < 0 || i >= len(model.PubsubComponentTypes()) {
 			return nil, errors.Errorf("input out of range: %d", i)
 		}
@@ -29,19 +29,9 @@ func ForPubSub() (*model.Pubsub, error) {
 		break
 	}
 
-	// comp name
-	compName, err := ForString("Component name: ", fmt.Sprintf("%s-pubsub", model.ToCodeSafeString(ps.ComponentType)))
-	if err != nil {
-		return nil, errors.Errorf("unable to read input: %v", err)
-	}
-	ps.ComponentName = compName
-
-	// topic name
-	topicName, err := ForString("Topic name: ", "messages")
-	if err != nil {
-		return nil, errors.Errorf("unable to read input: %v", err)
-	}
-	ps.TopicName = topicName
+	// comp and topic name
+	ps.ComponentName = ForString("Component name: ", fmt.Sprintf("%s-pubsub", model.ToCodeSafeString(ps.ComponentType)))
+	ps.TopicName = ForString("Topic name: ", "messages")
 
 	return ps, nil
 }

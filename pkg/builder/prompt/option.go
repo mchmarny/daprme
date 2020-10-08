@@ -17,7 +17,7 @@ func ForOption(question string, opts ...string) (string, error) {
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		i := readInt(reader)
+		i := readInt(reader, 0)
 		if i < 0 || i >= len(opts) {
 			fmt.Printf("Input out of range '%d', defaulting to %s.\n", i, defaultOpt)
 			return ForOption(question, opts...)

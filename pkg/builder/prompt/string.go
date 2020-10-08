@@ -8,7 +8,7 @@ import (
 )
 
 // ForString prompts for string answer
-func ForString(question, fallback string) (string, error) {
+func ForString(question, fallback string) string {
 	if fallback != "" {
 		question = fmt.Sprintf("%s [%s]", question, fallback)
 	}
@@ -18,14 +18,15 @@ func ForString(question, fallback string) (string, error) {
 	for {
 		answer, err := reader.ReadString('\n')
 		if err != nil {
-			return "", err
+			fmt.Println("Error parsing answer, please try again")
+			return ForString(question, fallback)
 		}
 
 		answer = strings.TrimSuffix(answer, "\n")
-		if answer == "" {
+		if len(answer) < 1 {
 			answer = fallback
 		}
 
-		return answer, nil
+		return answer
 	}
 }
