@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/dapr-templates/daprme/pkg/builder/format"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
@@ -29,7 +30,7 @@ func ForBinding() (*model.Binding, error) {
 	}
 
 	// comp name
-	b.ComponentName = ForString("Component name: ", fmt.Sprintf("%s-pubsub", model.ToCodeSafeString(b.ComponentType)))
+	b.ComponentName = ForString("Component name: ", fmt.Sprintf("%s-pubsub", format.CodeSafeString(b.ComponentType)))
 
 	return b, nil
 }

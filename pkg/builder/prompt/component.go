@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/dapr-templates/daprme/pkg/builder/format"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
 
 // ForComponents collects client component info
-func ForComponents(list []string) ([]*model.Component, error) {
+func ForComponents(list []string, comp string) ([]*model.Component, error) {
 	out := make([]*model.Component, 0)
 	for i, o := range list {
 		fmt.Printf(fmt.Sprintf(" [%2d]: %s\n", i, o))
@@ -25,7 +26,7 @@ func ForComponents(list []string) ([]*model.Component, error) {
 		}
 
 		c := &model.Component{
-			ComponentName: model.ToCodeSafeString(list[i]),
+			ComponentName: fmt.Sprintf("%s-%s", format.CodeSafeString(list[i]), comp),
 			ComponentType: list[i],
 		}
 

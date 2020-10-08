@@ -1,34 +1,21 @@
 package builder
 
 import (
-	"fmt"
-
+	"github.com/dapr-templates/daprme/pkg/builder/print"
 	"github.com/dapr-templates/daprme/pkg/builder/prompt"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
 
 const (
-	sectionLength = 80
-	morePrompt    = "Add another?"
+	morePrompt = "Add another?"
 )
-
-func printSection(title string) {
-	s := fmt.Sprintf("= %s ", title)
-	for i := len(s); i < sectionLength; i++ {
-		s = s + "="
-	}
-
-	fmt.Println()
-	fmt.Println(s)
-	fmt.Println()
-}
 
 // Start starts the wizard
 func Start() (app *model.App, err error) {
 	app = &model.App{}
 
-	printSection("Application")
+	print.Header("Application")
 
 	// name
 	app.Name = prompt.ForString("Name: ", "my-app")
@@ -57,7 +44,7 @@ func Start() (app *model.App, err error) {
 	}
 	app.Port = appPort
 
-	printSection("Pub/Sub")
+	print.Header("Pub/Sub")
 
 	// pubsub
 	if prompt.ForBool("Subscribe to topic?") {
@@ -77,7 +64,7 @@ func Start() (app *model.App, err error) {
 		}
 	}
 
-	printSection("Binding")
+	print.Header("Binding")
 
 	// binding
 	if prompt.ForBool("Use input binding?") {
@@ -97,7 +84,7 @@ func Start() (app *model.App, err error) {
 		}
 	}
 
-	printSection("Service Invocation")
+	print.Header("Service Invocation")
 
 	// service
 	if prompt.ForBool("Enable service invocation?") {
@@ -118,27 +105,27 @@ func Start() (app *model.App, err error) {
 		}
 	}
 
-	printSection("Secrets")
+	print.Header("Secrets")
 
 	// secret
 	app.Components = make([]*model.Component, 0)
 	if prompt.ForBool("Use secrets?") {
-		secretComp, err := prompt.ForComponents(model.SecretComponentTypes())
+		secretComp, err := prompt.ForComponents(model.SecretComponentTypes(), "secret")
 		if err != nil {
 			return nil, errors.Errorf("Error parsing answer: %v.", err)
 		}
 		app.Components = append(app.Components, secretComp...)
 	}
 
-	printSection("Dapr Client")
+	print.Header("Dapr Client")
 
 	// client
 	app.UsesClient = prompt.ForBool("Uses Dapr client?")
 	if app.UsesClient {
 
 		// state
-		if prompt.ForBool("Add State client components?") {
-			stateComp, err := prompt.ForComponents(model.StateComponentTypes())
+		if prompt.ForBool("Add state components?") {
+			stateComp, err := prompt.ForComponents(model.StateComponentTypes(), "store")
 			if err != nil {
 				return nil, errors.Errorf("Error parsing answer: %v.", err)
 			}
@@ -146,8 +133,8 @@ func Start() (app *model.App, err error) {
 		}
 
 		// pubsub
-		if prompt.ForBool("Add PubSub client components?") {
-			pubsubComp, err := prompt.ForComponents(model.PubsubComponentTypes())
+		if prompt.ForBool("Add pub/sub components?") {
+			pubsubComp, err := prompt.ForComponents(model.PubsubComponentTypes(), "pubsub")
 			if err != nil {
 				return nil, errors.Errorf("Error parsing answer: %v.", err)
 			}
@@ -155,8 +142,8 @@ func Start() (app *model.App, err error) {
 		}
 
 		// binding
-		if prompt.ForBool("Add Output Binding client components?") {
-			outBindComp, err := prompt.ForComponents(model.OutputBindingComponentTypes())
+		if prompt.ForBool("Add output binding components?") {
+			outBindComp, err := prompt.ForComponents(model.OutputBindingComponentTypes(), "binding")
 			if err != nil {
 				return nil, errors.Errorf("Error parsing answer: %v.", err)
 			}

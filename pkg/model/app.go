@@ -1,8 +1,6 @@
 package model
 
 import (
-	"regexp"
-
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 )
@@ -48,10 +46,4 @@ func Unmarshal(in []byte) (*App, error) {
 		return nil, errors.Wrap(err, "error unmarshalling data")
 	}
 	return &a, nil
-}
-
-// ToCodeSafeString removes non-alpha characters
-func ToCodeSafeString(val string) string {
-	reg := regexp.MustCompile("[^a-zA-Z]+")
-	return reg.ReplaceAllString(val, "")
 }

@@ -15,7 +15,7 @@ import (
 	{{- else}}
 	daprd "github.com/dapr/go-sdk/service/http"
 	{{- end}}
-	{{- if .NeedsClient}}
+	{{- if .UsesClient}}
 	dapr "github.com/dapr/go-sdk/client"
 	{{- end}}
 )
@@ -24,7 +24,7 @@ var (
 	logger     = log.New(os.Stdout, "", 0)
 	address    = getEnvVar("ADDRESS", ":{{.Port}}")
 	
-	{{- if .NeedsClient}}
+	{{- if .UsesClient}}
 	client dapr.Client
 	{{- end}}
   
@@ -44,7 +44,7 @@ func main() {
 	{{- else}}
 	s := daprd.NewService(address)
 	{{- end}}
-	{{- if .NeedsClient}}
+	{{- if .UsesClient}}
 	// create Dapr client
 	c, err := dapr.NewClient()
 	if err != nil {
