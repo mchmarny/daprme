@@ -85,5 +85,37 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@master
       with:
-        name: daprme
+        name: daprme_archive
         path: ${{ env.ARCHIVE_OUTDIR }}/*
+
+  publish:
+    name: Publish
+    needs: build
+    if: startswith(github.ref, 'refs/tags/v')
+    env:
+      ARTIFACT_DIR: ./release
+    runs-on: ubuntu-latest
+    steps:
+      - name: download artifacts
+        uses: actions/download-artifact@master
+        with:
+          name: daprme_archive
+          path: ${{ env.ARTIFACT_DIR }}
+      - name: publish binaries to github
+        if: startswith(github.ref, 'refs/tags/v')
+        run: |
+          echo "installing github-release-cli..."
+          sudo npm install --silent --no-progress -g github-release-cli@1.3.1
+          # Get the list of files
+          RELEASE_ARTIFACT=(${ARTIFACT_DIR}/*)
+          # Parse repository to get owner and repo names
+          OWNER_NAME="${GITHUB_REPOSITORY%%/*}"
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          export GITHUB_TOKEN=${{ secrets.RELEASE_USER_TOKEN }}
+          echo "Uploading Binaries to GitHub Release"
+          github-release upload \
+            --owner $OWNER_NAME --repo $REPO_NAME \
+            --tag "v${REL_VERSION}" \
+            --name "daprme $(echo ${GITHUB_REF:10})" \
+            --prerelease true \
+            ${RELEASE_ARTIFACT[*]}
