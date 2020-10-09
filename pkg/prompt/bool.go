@@ -13,13 +13,11 @@ func ForBool(question string) bool {
 	fmt.Printf(question + "\n> ")
 
 	reader := bufio.NewReader(os.Stdin)
-	for {
-		answer, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println("Error reading input, try again.")
-			return ForBool(question)
-		}
-		answer = strings.TrimSuffix(answer, "\n")
-		return strings.ToUpper(answer) == "Y"
+	answer, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("Error reading input, try again.")
+		return ForBool(question)
 	}
+	answer = strings.TrimSuffix(answer, "\n")
+	return strings.ToUpper(answer) == "Y"
 }

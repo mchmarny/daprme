@@ -12,9 +12,7 @@ func TestAddComponent(t *testing.T) {
 	p.Name = "awssqs-binding"
 	p.Type = "bindings.aws.sqs"
 
-	var i interface{}
-	i = p
-
+	var i interface{} = p
 	c, ok := i.(model.Componentable)
 	assert.True(t, ok)
 	assert.NotNil(t, c)

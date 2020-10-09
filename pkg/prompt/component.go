@@ -13,7 +13,7 @@ import (
 func ForComponents(list []string, suffix, comp string) ([]*model.Component, error) {
 	out := make([]*model.Component, 0)
 	for i, o := range list {
-		fmt.Printf(fmt.Sprintf(" [%2d]: %s\n", i, o))
+		fmt.Printf(" [%2d]: %s\n", i, o)
 	}
 	fmt.Println()
 

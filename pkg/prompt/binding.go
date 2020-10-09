@@ -16,26 +16,22 @@ const (
 func ForBinding() (*model.Component, error) {
 	b := &model.Component{}
 	fmt.Println("What type of binding component:")
-	for i, o := range model.InputBindingComponentTypes() {
-		fmt.Printf(fmt.Sprintf(" [%2d]: %s\n", i, o))
+	list := model.InputBindingComponentTypes()
+	for i, o := range list {
+		fmt.Printf(" [%2d]: %s\n", i, o)
 	}
 	fmt.Println()
 
-	var selectType string
 	reader := bufio.NewReader(os.Stdin)
-	for {
-		i := readInt(reader, 0)
-		if i < 0 || i >= len(model.InputBindingComponentTypes()) {
-			fmt.Println(outOfRangeMessage)
-			return ForBinding()
-		}
-		selectType = model.InputBindingComponentTypes()[i]
-		break
+	i := readInt(reader, 0)
+	if i < 0 || i >= len(list) {
+		fmt.Println(outOfRangeMessage)
+		return ForBinding()
 	}
 
 	// comp name
-	b.Type = fmt.Sprintf("bindings.%s", selectType)
-	b.Name = ForString("Component name: ", fmt.Sprintf("%s-binding", codeSafeString(selectType)))
+	b.Type = fmt.Sprintf("bindings.%s", list[i])
+	b.Name = ForString("Component name: ", fmt.Sprintf("%s-binding", codeSafeString(list[i])))
 
 	return b, nil
 }

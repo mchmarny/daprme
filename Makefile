@@ -15,8 +15,7 @@ res: ## Compiles resource files into binary data resource
 
 .PHONY: test
 test: clean ## Tests the entire project 
-	go test -v -count=1 -race ./...
-	# go test -v -count=1 -run SpecificTestName ./...
+	go test -v -count=1 -race -coverprofile=coverage.txt -covermode=atomic ./...
 
 .PHONY: run
 run: clean tidy ## Runs uncompiled code 
