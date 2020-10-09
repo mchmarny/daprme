@@ -30,6 +30,7 @@ build: clean tidy res ## Builds binaries
 	CGO_ENABLED=0 go build \
 		-ldflags "-X main.Version=$(RELEASE_VERSION)" \
 		-mod vendor -o bin/$(APP_NAME) .
+	cp ./bin/$(APP_NAME) /usr/local/bin/daprme
 
 .PHONY: lint
 lint: clean ## Lints the entire project 
