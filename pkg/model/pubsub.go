@@ -1,9 +1,20 @@
 package model
 
-// Pubsub represents PubSub component
-type Pubsub struct {
-	Component
-	TopicName string `yaml:"TopicName"`
+// PubSub represents PubSub component
+type PubSub struct {
+	Name  string `yaml:"Name"`
+	Type  string `yaml:"Type"`
+	Topic string `yaml:"Topic"`
+}
+
+// GetType returns the name of the component type
+func (c *PubSub) GetType() string {
+	return c.Type
+}
+
+// GetName returns the name of the component
+func (c *PubSub) GetName() string {
+	return c.Name
 }
 
 // PubsubComponentTypes lists all supported components

@@ -1,7 +1,7 @@
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: sendgrid
+  name: {{.Name}}
 spec:
   type: bindings.twilio.sendgrid
   metadata:

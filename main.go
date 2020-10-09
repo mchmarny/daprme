@@ -35,7 +35,7 @@ func main() {
 	}
 
 	print.Header("Done")
-	print.Content(fmt.Sprintf("Your project was created in %s directory.", app.Name))
+	print.Content(fmt.Sprintf("Your project was created in %s directory.", app.Meta.Name))
 
 	os.Exit(0)
 }

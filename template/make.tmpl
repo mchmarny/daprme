@@ -1,4 +1,4 @@
-SERVICE_NAME    ?={{.Name}}
+SERVICE_NAME    ?={{.Meta.Name}}
 RELEASE_VERSION ?=v0.1.1
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
@@ -15,7 +15,7 @@ test: tidy ## Tests the entire project
 	go test -count=1 -race ./...
 
 .PHONY: run
-run: tidy ## Runs uncompiled code in Dapr
+run: tidy ## Runs un-compiled code in Dapr
 	dapr run \
 		 --app-id $(SERVICE_NAME) \
 		 --app-port 50001 \
@@ -28,12 +28,12 @@ run: tidy ## Runs uncompiled code in Dapr
 build: tidy ## Builds local release binary
 	CGO_ENABLED=0 go build -a -tags netgo -mod vendor -o bin/$(SERVICE_NAME) .
 
-{{- range $i, $v := .Pubsubs}}
-.PHONY: event{{$v.ComponentName}}
-event{{$v.ComponentName}}: ## Publishes sample JSON message to Dapr pubsub API 
+{{- range $i, $v := .PubSubs}}
+.PHONY: event{{$v.Name}}
+event{{$v.Name}}: ## Publishes sample JSON message to Dapr pubsub API 
 	curl -d '{ "from": "John", "to": "Lary", "message": "hi" }' \
      -H "Content-type: application/json" \
-     "http://localhost:3500/v1.0/publish/{{$v.ComponentName}}/{{$v.TopicName}}"
+     "http://localhost:3500/v1.0/publish/{{$v.Name}}/{{$v.Topic}}"
 {{- end}}
 
 .PHONY: image

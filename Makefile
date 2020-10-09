@@ -26,7 +26,7 @@ run: clean tidy ## Runs uncompiled code
 build: clean tidy ## Builds binaries
 	CGO_ENABLED=0 go build \
 		-ldflags "-X main.Version=$(RELEASE_COMMIT)" \
-    	-mod vendor -o bin/$(APP_NAME) .
+		-mod vendor -o bin/$(APP_NAME) .
 
 .PHONY: lint
 lint: clean ## Lints the entire project 

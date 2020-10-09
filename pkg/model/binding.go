@@ -1,10 +1,5 @@
 package model
 
-// Binding represents Binding component
-type Binding struct {
-	Component
-}
-
 // InputBindingComponentTypes lists all supported components
 func InputBindingComponentTypes() []string {
 	return []string{

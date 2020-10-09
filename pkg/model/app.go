@@ -14,13 +14,10 @@ const (
 
 // App represents app state
 type App struct {
-	Name       string       `yaml:"Name"`
-	Protocol   string       `yaml:"Protocol"`
-	Port       int          `yaml:"Port"`
-	Pubsubs    []*Pubsub    `yaml:"Pubsubs"`
-	Bindings   []*Binding   `yaml:"Bindings"`
+	Meta       Meta         `yaml:"Meta"`
+	PubSubs    []*PubSub    `yaml:"PubSubs"`
+	Bindings   []*Component `yaml:"Bindings"`
 	Services   []*Service   `yaml:"Services"`
-	UsesClient bool         `yaml:"UsesClient"`
 	Components []*Component `yaml:"Components"`
 }
 

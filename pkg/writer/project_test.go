@@ -8,9 +8,9 @@ import (
 )
 
 func TestAddComponent(t *testing.T) {
-	p := &model.Pubsub{}
-	p.ComponentName = "awssqs-binding"
-	p.ComponentType = "bindings.aws.sqs"
+	p := &model.PubSub{}
+	p.Name = "awssqs-binding"
+	p.Type = "bindings.aws.sqs"
 
 	var i interface{}
 	i = p

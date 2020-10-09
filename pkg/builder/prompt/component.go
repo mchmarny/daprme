@@ -26,8 +26,8 @@ func ForComponents(list []string, suffix, comp string) ([]*model.Component, erro
 		}
 
 		c := &model.Component{
-			ComponentName: fmt.Sprintf("%s-%s", format.CodeSafeString(list[i]), suffix),
-			ComponentType: fmt.Sprintf("%s.%s", comp, list[i]),
+			Name: fmt.Sprintf("%s-%s", format.CodeSafeString(list[i]), suffix),
+			Type: fmt.Sprintf("%s.%s", comp, list[i]),
 		}
 
 		out = append(out, c)

@@ -1,25 +1,31 @@
-Name:  my-app
-Protocol: HTTP
-Port: 8080
-Pubsubs:
-- component:
-    ComponentType: pubsub.azure.servicebus
-    ComponentName: azureservicebus-pubsub
-  TopicName: messages
-- component:
-    ComponentType: pubsub.hazelcast
-    ComponentName: hazelcast-pubsub
-  TopicName: messages
+Meta:
+  Name: my-app
+  Protocol: gRPC
+  Port: 50050
+  UsesClient: true
+PubSubs:
+- Type: pubsub.redis
+  Name: redis-pubsub
+  Topic: messages
+- Type: pubsub.kafka
+  Name: kafka-pubsub
+  Topic: messages
 Bindings:
-- component:
-    ComponentType: bindings.kafka
-    ComponentName: kafka-binding
-Services: []
-UsesClient: true
+- Type: bindings.cron
+  Name: cron-binding
+- Type: bindings.kafka
+  Name: kafka-binding
+Services:
+- Name: myService
+- Name: myOtherService
 Components:
-- ComponentType: state.cassandra
-  ComponentName: cassandra-store
-- ComponentType: pubsub.mqtt
-  ComponentName: mqtt-pubsub
-- ComponentType: bindings.azure.eventhubs
-  ComponentName: azureeventhubs-binding
+- Type: secretstores.local.env
+  Name: localenv-secret
+- Type: state.redis
+  Name: redis-store
+- Type: state.postgresql
+  Name: postgresql-store
+- Type: pubsub.snssqs
+  Name: snssqs-pubsub
+- Type: bindings.twitter
+  Name: twitter-binding

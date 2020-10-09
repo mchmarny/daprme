@@ -22,7 +22,7 @@ func Make(app *model.App) error {
 	}
 
 	// create directories
-	outDir := path.Join(".", app.Name)
+	outDir := path.Join(".", app.Meta.Name)
 	if err := createDir(outDir); err != nil {
 		return errors.Wrapf(err, "Error creating project dir: %s.", outDir)
 	}
@@ -59,14 +59,14 @@ func Make(app *model.App) error {
 
 	// components
 	for _, c := range app.Bindings {
-		if err := addComponent(&c.Component, configDir); err != nil {
+		if err := addComponent(c, configDir); err != nil {
 			return errors.Wrap(err, "Error creating binding component.")
 		}
 	}
 
 	// pubsub
-	for _, c := range app.Pubsubs {
-		if err := addComponent(&c.Component, configDir); err != nil {
+	for _, c := range app.PubSubs {
+		if err := addComponent(c, configDir); err != nil {
 			return errors.Wrap(err, "Error creating pubsub component.")
 		}
 	}

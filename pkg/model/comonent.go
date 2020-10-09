@@ -2,18 +2,18 @@ package model
 
 // Component represents a Dapr component
 type Component struct {
-	ComponentType string `yaml:"ComponentType"`
-	ComponentName string `yaml:"ComponentName"`
+	Name string `yaml:"Name"`
+	Type string `yaml:"Type"`
 }
 
 // GetType returns the name of the component type
 func (c *Component) GetType() string {
-	return c.ComponentType
+	return c.Type
 }
 
 // GetName returns the name of the component
 func (c *Component) GetName() string {
-	return c.ComponentName
+	return c.Name
 }
 
 // Componentable defines the component interface

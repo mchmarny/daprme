@@ -10,33 +10,33 @@ import (
 	"strings"
 
 	"github.com/dapr/go-sdk/service/common"
-	{{- if eq .Protocol "gRPC"}}
+	{{- if eq .Meta.Protocol "gRPC"}}
   	daprd "github.com/dapr/go-sdk/service/grpc"
 	{{- else}}
 	daprd "github.com/dapr/go-sdk/service/http"
 	{{- end}}
-	{{- if .UsesClient}}
+	{{- if .Meta.UsesClient}}
 	dapr "github.com/dapr/go-sdk/client"
 	{{- end}}
 )
 
 var (
 	logger     = log.New(os.Stdout, "", 0)
-	address    = getEnvVar("ADDRESS", ":{{.Port}}")
+	address    = getEnvVar("ADDRESS", ":{{.Meta.Port}}")
 	
-	{{- if .UsesClient}}
+	{{- if .Meta.UsesClient}}
 	client dapr.Client
 	{{- end}}
   
-	{{- range $i, $v := .Pubsubs}}
-	pubSubName{{$i}} = getEnvVar("PUBSUB_NAME_{{$i}}", "{{$v.ComponentName}}")
-	topicName{{$i}}  = getEnvVar("TOPIC_NAME_{{$i}}", "{{$v.TopicName}}")
+	{{- range $i, $v := .PubSubs}}
+	pubSubName{{$i}} = getEnvVar("PUBSUB_NAME_{{$i}}", "{{$v.Name}}")
+	topicName{{$i}}  = getEnvVar("TOPIC_NAME_{{$i}}", "{{$v.Topic}}")
     {{- end}}
 )
 
 func main() {
 	// create Dapr service
-	{{- if eq .Protocol "gRPC"}}
+	{{- if eq .Meta.Protocol "gRPC"}}
   	s, err := daprd.NewService(serviceAddress)
 	if err != nil {
 		log.Fatalf("failed to start the server: %v", err)
@@ -44,7 +44,7 @@ func main() {
 	{{- else}}
 	s := daprd.NewService(address)
 	{{- end}}
-	{{- if .UsesClient}}
+	{{- if .Meta.UsesClient}}
 	// create Dapr client
 	c, err := dapr.NewClient()
 	if err != nil {
@@ -56,12 +56,12 @@ func main() {
 
 
 
-  	{{- range $i, $v := .Pubsubs}}
+  	{{- range $i, $v := .PubSubs}}
 	// add topic subscriptions {{$i}}
 	sub{{$i}} := &common.Subscription{
 		PubsubName: pubSubName{{$i}},
 		Topic:      topicName{{$i}},
-		{{- if eq $.Protocol "HTTP"}}
+		{{- if eq $.Meta.Protocol "HTTP"}}
 		Route:      fmt.Sprintf("/%s", topicName),
 		{{- end}}
 	}
@@ -73,8 +73,8 @@ func main() {
 
 	{{- range $i, $v := .Bindings}}
 	// add input bindings {{$i}}
-	if err := s.AddBindingInvocationHandler("{{$v.ComponentName}}", inputHandler); err != nil {
-		logger.Fatalf("error adding {{$v.ComponentName}} binding handler: %v", err)
+	if err := s.AddBindingInvocationHandler("{{$v.Name}}", inputHandler); err != nil {
+		logger.Fatalf("error adding {{$v.Name}} binding handler: %v", err)
 	}
 
   	{{- end}}
@@ -88,7 +88,7 @@ func main() {
   	{{- end}}
 
 	// start the server
-	{{- if eq .Protocol "gRPC"}}
+	{{- if eq .Meta.Protocol "gRPC"}}
   	if err := s.Start(); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
@@ -99,7 +99,7 @@ func main() {
 	{{- end}}
 }
 
-{{ $length := len .Pubsubs }} {{- if gt $length 0 }}
+{{ $length := len .PubSubs }} {{- if gt $length 0 }}
 func eventHandler(ctx context.Context, e *common.TopicEvent) (retry bool, err error) {
 	logger.Printf(
 		"event - PubsubName:%s, Topic:%s, ID:%s, Data: %v",

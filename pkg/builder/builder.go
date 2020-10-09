@@ -19,7 +19,7 @@ func Start() (app *model.App, err error) {
 	print.Header("Application")
 
 	// name
-	app.Name = prompt.ForString("Name: ", appNameDefault)
+	app.Meta.Name = prompt.ForString("Name: ", appNameDefault)
 
 	// protocol
 	protocol, err := prompt.ForOption("App protocol: ", model.HTTPProtocol, model.GRPCProtocol)
@@ -29,10 +29,10 @@ func Start() (app *model.App, err error) {
 	var defaultPort int
 	switch protocol {
 	case model.HTTPProtocol:
-		app.Protocol = model.HTTPProtocol
+		app.Meta.Protocol = model.HTTPProtocol
 		defaultPort = 8080
 	case model.GRPCProtocol:
-		app.Protocol = model.GRPCProtocol
+		app.Meta.Protocol = model.GRPCProtocol
 		defaultPort = 50050
 	default:
 		return nil, errors.Errorf("invalid protocol input: %s", protocol)
@@ -43,13 +43,13 @@ func Start() (app *model.App, err error) {
 	if err != nil {
 		return nil, errors.Errorf("unable to read input: %v", err)
 	}
-	app.Port = appPort
+	app.Meta.Port = appPort
 
 	print.Header("Pub/Sub")
 
 	// pubsub
 	if prompt.ForBool("Subscribe to topic?") {
-		list := make([]*model.Pubsub, 0)
+		list := make([]*model.PubSub, 0)
 		for {
 			comp, err := prompt.ForPubSub()
 			if err != nil {
@@ -61,7 +61,7 @@ func Start() (app *model.App, err error) {
 			}
 		}
 		if len(list) > 0 {
-			app.Pubsubs = list
+			app.PubSubs = list
 		}
 	}
 
@@ -69,7 +69,7 @@ func Start() (app *model.App, err error) {
 
 	// binding
 	if prompt.ForBool("Use input binding?") {
-		list := make([]*model.Binding, 0)
+		list := make([]*model.Component, 0)
 		for {
 			comp, err := prompt.ForBinding()
 			if err != nil {
@@ -121,8 +121,8 @@ func Start() (app *model.App, err error) {
 	print.Header("Dapr Client")
 
 	// client
-	app.UsesClient = prompt.ForBool("Uses Dapr client?")
-	if app.UsesClient {
+	app.Meta.UsesClient = prompt.ForBool("Uses Dapr client?")
+	if app.Meta.UsesClient {
 
 		// state
 		if prompt.ForBool("Add state components?") {
