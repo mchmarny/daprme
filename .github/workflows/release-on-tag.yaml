@@ -71,7 +71,7 @@ jobs:
         only-new-issues: true
 
     - name: Test
-      run: go test -v -count=1 -race ./...
+      run: go test -v ./...
 
     - name: Archive
       run: |
