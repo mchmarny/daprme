@@ -17,6 +17,10 @@ res: ## Compiles resource files into binary data resource
 test: clean ## Tests the entire project 
 	go test -v -count=1 -race -coverprofile=coverage.txt -covermode=atomic ./...
 
+.PHONY: cover
+cover: clean ## Displays test coverage 
+	go test -coverprofile=coverage.out ./... && go tool cover -mode=atomic -html=coverage.out
+
 .PHONY: run
 run: clean tidy ## Runs uncompiled code 
 	go run main.go
