@@ -18,8 +18,12 @@ test: tidy ## Tests the entire project
 run: tidy ## Runs un-compiled code in Dapr
 	dapr run \
 		 --app-id $(SERVICE_NAME) \
-		 --app-port 50001 \
+		 --app-port {{.Meta.Port}} \
+		 {{- if eq .Meta.Type "HTTP"}}
+		 --app-protocol http \
+		 {{- else if eq .Meta.Type "GRPC"}}
 		 --app-protocol grpc \
+		 {{- end}}
 		 --dapr-http-port 3500 \
          --components-path ./config \
          go run main.go

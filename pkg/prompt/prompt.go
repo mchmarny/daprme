@@ -9,9 +9,11 @@ import (
 )
 
 const (
-	sectionLength  = 80
-	morePrompt     = "Add another?"
-	appNameDefault = "my-app"
+	sectionLength   = 80
+	morePrompt      = "Add another?"
+	appNameDefault  = "my-app"
+	httpPortDefault = 8080
+	grpcPortDefault = 50505
 )
 
 // Start starts the wizard
@@ -27,9 +29,9 @@ func Start() (app *model.App, err error) {
 	app.Meta.Type = ForOption("App type: ", model.AppTypeCLI, model.AppTypeGRPC, model.AppTypeHTTP)
 	switch app.Meta.Type {
 	case model.AppTypeGRPC:
-		app.Meta.Port = 50050
+		app.Meta.Port = grpcPortDefault
 	case model.AppTypeHTTP:
-		app.Meta.Port = 8080
+		app.Meta.Port = httpPortDefault
 	}
 
 	// lang

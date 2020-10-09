@@ -40,7 +40,7 @@ var (
 func main() {
 	{{- if eq .Meta.Type "gRPC"}}
 	// create gRPC Dapr service
-  	s, err := daprd.NewService(serviceAddress)
+  	s, err := daprd.NewService(address)
 	if err != nil {
 		log.Fatalf("failed to start the server: %v", err)
 	}
@@ -70,7 +70,7 @@ func main() {
 		Route:      fmt.Sprintf("/%s", topicName),
 		{{- end}}
 	}
-	if err := s.AddTopicEventHandler("sub{{$i}}", eventHandler); err != nil {
+	if err := s.AddTopicEventHandler(sub{{$i}}, eventHandler); err != nil {
 		logger.Fatalf("error adding subscription {{$i}}: %v", err)
 	}
 
