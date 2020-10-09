@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dapr-templates/daprme/pkg/format"
 	"github.com/dapr-templates/daprme/pkg/model"
 )
 
@@ -33,7 +32,7 @@ func ForPubSub() (*model.PubSub, error) {
 
 	// comp and topic name
 	ps.Type = fmt.Sprintf("pubsub.%s", selectType)
-	ps.Name = ForString("Component name: ", fmt.Sprintf("%s-pubsub", format.CodeSafeString(selectType)))
+	ps.Name = ForString("Component name: ", fmt.Sprintf("%s-pubsub", codeSafeString(selectType)))
 	ps.Topic = ForString("Topic name: ", "messages")
 
 	return ps, nil

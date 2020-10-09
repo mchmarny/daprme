@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dapr-templates/daprme/pkg/format"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
@@ -26,7 +25,7 @@ func ForComponents(list []string, suffix, comp string) ([]*model.Component, erro
 		}
 
 		c := &model.Component{
-			Name: fmt.Sprintf("%s-%s", format.CodeSafeString(list[i]), suffix),
+			Name: fmt.Sprintf("%s-%s", codeSafeString(list[i]), suffix),
 			Type: fmt.Sprintf("%s.%s", comp, list[i]),
 		}
 

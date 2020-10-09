@@ -1,4 +1,4 @@
-// Code generated for package writer by go-bindata DO NOT EDIT. (@generated)
+// Code generated for package project by go-bindata DO NOT EDIT. (@generated)
 // sources:
 // template/component/bindings.aws.dynamodb.tmpl
 // template/component/bindings.aws.kinesis.tmpl
@@ -66,7 +66,7 @@
 // template/ignore.tmpl
 // template/main.tmpl
 // template/make.tmpl
-package writer
+package project
 
 import (
 	"bytes"

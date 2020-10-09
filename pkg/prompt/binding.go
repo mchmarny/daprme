@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dapr-templates/daprme/pkg/format"
 	"github.com/dapr-templates/daprme/pkg/model"
 )
 
@@ -36,7 +35,7 @@ func ForBinding() (*model.Component, error) {
 
 	// comp name
 	b.Type = fmt.Sprintf("bindings.%s", selectType)
-	b.Name = ForString("Component name: ", fmt.Sprintf("%s-binding", format.CodeSafeString(selectType)))
+	b.Name = ForString("Component name: ", fmt.Sprintf("%s-binding", codeSafeString(selectType)))
 
 	return b, nil
 }

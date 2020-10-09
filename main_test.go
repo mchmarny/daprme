@@ -4,9 +4,8 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/dapr-templates/daprme/pkg/cmd"
 	"github.com/dapr-templates/daprme/pkg/model"
-	"github.com/dapr-templates/daprme/pkg/writer"
+	"github.com/dapr-templates/daprme/pkg/project"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
@@ -33,12 +32,12 @@ func TestIntegration(t *testing.T) {
 		t.FailNow()
 	}
 
-	if err := writer.Make(app); err != nil {
+	if err := project.Make(app); err != nil {
 		t.Logf("Error making project: %v", err)
 		t.FailNow()
 	}
 
-	if err := cmd.InitProject("test", app.Meta.Name); err != nil {
+	if err := project.Initialize("test", app.Meta.Name); err != nil {
 		t.Logf("Error initializing project: %v", err)
 		t.FailNow()
 	}

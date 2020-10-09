@@ -1,4 +1,4 @@
-package cmd
+package project
 
 import (
 	"fmt"
@@ -8,8 +8,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// InitProject initializes go project
-func InitProject(usr, app string) error {
+// Initialize initializes go project
+func Initialize(usr, app string) error {
 	if err := initModule(usr, app); err != nil {
 		return err
 	}

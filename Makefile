@@ -11,7 +11,7 @@ tidy: ## Updates the go modules and vendors all dependancies
 
 .PHONY: res
 res: ## Compiles resource files into binary data resource 
-	go-bindata -pkg writer -o pkg/writer/resource.go template/...
+	go-bindata -pkg project -o pkg/project/resource.go template/...
 
 .PHONY: test
 test: clean ## Tests the entire project 
