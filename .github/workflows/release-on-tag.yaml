@@ -15,7 +15,7 @@ jobs:
       GOOS: ${{ matrix.target_os }}
       GOARCH: ${{ matrix.target_arch }}
       GOPROXY: https://proxy.golang.org
-      ARCHIVE_OUTDIR: dist/archives
+      ARCHIVE_OUTDIR: ./release
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
@@ -86,7 +86,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: daprme_archive
-        path: ${{ env.ARCHIVE_OUTDIR }}/*
+        path: ${{ env.ARCHIVE_OUTDIR }}
 
   publish:
     name: Publish
@@ -116,6 +116,6 @@ jobs:
           github-release upload \
             --owner $OWNER_NAME --repo $REPO_NAME \
             --tag "v${REL_VERSION}" \
-            --name "daprme $(echo ${GITHUB_REF:10})" \
+            --name "daprme v${REL_VERSION}" \
             --prerelease true \
             ${RELEASE_ARTIFACT[*]}
