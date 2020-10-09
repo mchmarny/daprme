@@ -23,9 +23,9 @@ run: clean tidy ## Runs uncompiled code
 	go run main.go
 
 .PHONY: build
-build: clean tidy ## Builds binaries
+build: clean tidy res ## Builds binaries
 	CGO_ENABLED=0 go build \
-		-ldflags "-X main.Version=$(RELEASE_COMMIT)" \
+		-ldflags "-X main.Version=$(RELEASE_VERSION)" \
 		-mod vendor -o bin/$(APP_NAME) .
 
 .PHONY: lint
