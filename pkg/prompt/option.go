@@ -7,7 +7,7 @@ import (
 )
 
 // ForOption prompts for options
-func ForOption(question string, opts ...string) (string, error) {
+func ForOption(question string, opts ...string) string {
 	fmt.Printf(question + "\n> ")
 	for i, o := range opts {
 		fmt.Printf(" [%d] %s ", i, o)
@@ -20,5 +20,5 @@ func ForOption(question string, opts ...string) (string, error) {
 		fmt.Printf("Input out of range '%d', please try again:\n", i)
 		return ForOption(question, opts...)
 	}
-	return opts[i], nil
+	return opts[i]
 }

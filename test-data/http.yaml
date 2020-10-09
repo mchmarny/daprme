@@ -1,6 +1,8 @@
 Meta:
   Name: my-http-app
   Type: HTTP
+  Lang: go
+  Main: main.go
   Port: 8080
 Bindings:
 - Type: bindings.cron

@@ -34,25 +34,25 @@ func Make(app *model.App) error {
 
 	// run templates
 	makefilePath := path.Join(outDir, "Makefile")
-	templateMakePath := path.Join(templateDir, "make.tmpl")
+	templateMakePath := path.Join(templateDir, fmt.Sprintf("make-%s.tmpl", app.Meta.Lang))
 	if err := execTemplate(app, makefilePath, templateMakePath); err != nil {
 		return errors.Wrap(err, "Error creating makefile.")
 	}
 
-	mainPath := path.Join(outDir, "main.go")
-	templateMainPath := path.Join(templateDir, "main.tmpl")
+	mainPath := path.Join(outDir, app.Meta.Main)
+	templateMainPath := path.Join(templateDir, fmt.Sprintf("main-%s.tmpl", app.Meta.Lang))
 	if err := execTemplate(app, mainPath, templateMainPath); err != nil {
-		return errors.Wrap(err, "Error creating main.go.")
+		return errors.Wrapf(err, "Error creating %s", mainPath)
 	}
 
 	dockerPath := path.Join(outDir, "Dockerfile")
-	templateDockerPath := path.Join(templateDir, "docker.tmpl")
+	templateDockerPath := path.Join(templateDir, fmt.Sprintf("docker-%s.tmpl", app.Meta.Lang))
 	if err := execTemplate(app, dockerPath, templateDockerPath); err != nil {
 		return errors.Wrap(err, "Error creating dockerfile.")
 	}
 
 	ignorePath := path.Join(outDir, ".gitignore")
-	templateIgnorePath := path.Join(templateDir, "ignore.tmpl")
+	templateIgnorePath := path.Join(templateDir, fmt.Sprintf("ignore-%s.tmpl", app.Meta.Lang))
 	if err := execTemplate(app, ignorePath, templateIgnorePath); err != nil {
 		return errors.Wrap(err, "Error creating ignorefile.")
 	}

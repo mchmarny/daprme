@@ -71,6 +71,9 @@ jobs:
         only-new-issues: true
 
     - name: Test
+      env:
+        COVERAGE_OPTS: "-coverprofile=coverage.txt -covermode=atomic"
+      if: matrix.target_arch == 'amd64'
       run: go test -v ./...
 
     - name: Archive

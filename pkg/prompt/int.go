@@ -9,13 +9,11 @@ import (
 )
 
 // ForInt prompts for int answer
-func ForInt(question string, fallback int) (int, error) {
+func ForInt(question string, fallback int) int {
 	question = fmt.Sprintf("%s [%d]", question, fallback)
 	fmt.Printf(question + "\n> ")
 	reader := bufio.NewReader(os.Stdin)
-	for {
-		return readInt(reader, fallback), nil
-	}
+	return readInt(reader, fallback)
 }
 
 func readInt(reader *bufio.Reader, fallback int) int {

@@ -6,12 +6,12 @@ import (
 )
 
 const (
-	// HTTP indicates HTTP Dapr protocol
-	HTTP = "HTTP"
-	// GRPC indicates gRPC Dapr protocol
-	GRPC = "gRPC"
-	// CLI indicates commandline app
-	CLI = "CLI"
+	// AppTypeHTTP indicates HTTP Dapr protocol
+	AppTypeHTTP = "HTTP"
+	// AppTypeGRPC indicates gRPC Dapr protocol
+	AppTypeGRPC = "gRPC"
+	// AppTypeCLI indicates commandline app
+	AppTypeCLI = "CLI"
 )
 
 // App represents app state

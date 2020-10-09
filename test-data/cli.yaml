@@ -1,6 +1,8 @@
 Meta:
   Name: my-cli-app
   Type: CLI
+  Lang: go
+  Main: main.go
   UsesClient: true
 Components:
 - Type: secretstores.local.env

@@ -1,6 +1,8 @@
 Meta:
   Name: my-grpc-app
   Type: gRPC
+  Lang: go
+  Main: main.go
   Port: 50050
   UsesClient: true
 PubSubs:

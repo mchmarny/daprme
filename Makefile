@@ -1,5 +1,5 @@
 APP_NAME         =daprme
-RELEASE_VERSION  =v0.3.5
+RELEASE_VERSION  =v0.3.6
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
 all: help
@@ -14,8 +14,8 @@ res: ## Compiles resource files into binary data resource
 	go-bindata -pkg project -o pkg/project/resource.go template/...
 
 .PHONY: test
-test: clean ## Tests the entire project 
-	go test -v -count=1 -race -coverprofile=coverage.txt -covermode=atomic ./...
+test: clean res ## Tests the entire project 
+	go test -v -count=1 -race ./...
 
 .PHONY: cover
 cover: clean ## Displays test coverage 
@@ -48,7 +48,9 @@ goclean: clean ## Cleans bin and temp directories
 
 .PHONY: clean
 clean: ## Cleans test dir
-	rm -fr ./my-app
+	rm -fr ./my-cli-app
+	rm -fr ./my-http-app
+	rm -fr ./my-grpc-app
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk \
