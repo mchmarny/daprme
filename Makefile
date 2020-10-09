@@ -1,5 +1,5 @@
 APP_NAME         =daprme
-RELEASE_VERSION  =v0.3.10
+RELEASE_VERSION  =v0.3.11
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
 all: help
@@ -31,6 +31,12 @@ build: clean tidy res ## Builds binaries
 		-ldflags "-X main.Version=$(RELEASE_VERSION)" \
 		-mod vendor -o bin/$(APP_NAME) .
 	cp ./bin/$(APP_NAME) /usr/local/bin/daprme
+
+.PHONY: release
+release: clean tidy res ## Builds releases
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.Version=$(RELEASE_VERSION)" -mod vendor -o release/$(APP_NAME) .
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.Version=$(RELEASE_VERSION)" -mod vendor -o release/$(APP_NAME)_linux .
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags "-X main.Version=$(RELEASE_VERSION)" -mod vendor -o release/$(APP_NAME).exe .
 
 .PHONY: lint
 lint: clean ## Lints the entire project 

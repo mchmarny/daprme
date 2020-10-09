@@ -35,11 +35,10 @@ func main() {
 		}
 	}
 
-	prompt.Header("Done")
 	prompt.Content(fmt.Sprintf("Project was created in: %s\n", app.Meta.Name))
 
 	// init
-	if prompt.ForBool("Initialize go module? (go mod init ...)") {
+	if prompt.ForBool("Initialize project?") {
 		usr := prompt.ForString("GitHub org or username?", "me")
 		if err := project.Initialize(usr, app.Meta.Name); err != nil {
 			fmt.Printf("Error initializing project: %v", err)
@@ -47,5 +46,6 @@ func main() {
 		}
 	}
 
+	prompt.Header("Done, Happy Dapring")
 	os.Exit(0)
 }
