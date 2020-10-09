@@ -1,6 +1,7 @@
 package project
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -16,7 +17,7 @@ const (
 )
 
 // Make creates project
-func Make(app *model.App) error {
+func Make(ctx context.Context, app *model.App) error {
 	if app == nil {
 		return errors.Errorf("App instance required.")
 	}

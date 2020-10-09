@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"testing"
@@ -45,12 +46,13 @@ func TestIntegration(t *testing.T) {
 }
 
 func testIntegration(t *testing.T, app *model.App) {
-	if err := project.Make(app); err != nil {
+	ctx := context.Background()
+	if err := project.Make(ctx, app); err != nil {
 		t.Logf("Error making project: %v", err)
 		t.FailNow()
 	}
 
-	if err := project.Initialize("test", app.Meta.Name); err != nil {
+	if err := project.Initialize(ctx, "test", app.Meta.Name); err != nil {
 		t.Logf("Error initializing project: %v", err)
 		t.FailNow()
 	}

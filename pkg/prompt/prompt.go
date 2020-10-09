@@ -1,6 +1,7 @@
 package prompt
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 
@@ -17,7 +18,7 @@ const (
 )
 
 // Start starts the wizard
-func Start() (app *model.App, err error) {
+func Start(ctx context.Context) (app *model.App, err error) {
 	app = &model.App{}
 
 	Header("Application")

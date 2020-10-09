@@ -1,6 +1,7 @@
 package project
 
 import (
+	"context"
 	"fmt"
 	"os/exec"
 	"path"
@@ -9,15 +10,14 @@ import (
 )
 
 // Initialize initializes go project
-func Initialize(usr, app string) error {
-	if err := initModule(usr, app); err != nil {
+func Initialize(ctx context.Context, usr, app string) error {
+	if err := initModule(ctx, usr, app); err != nil {
 		return err
 	}
-	return tidyModule(app)
+	return tidyModule(ctx, app)
 }
 
-func initModule(usr, app string) error {
-
+func initModule(ctx context.Context, usr, app string) error {
 	m := fmt.Sprintf("github.com/%s/%s", usr, app)
 	c := exec.Command("go", "mod", "init", m)
 	c.Dir = path.Join(".", app)
@@ -29,7 +29,7 @@ func initModule(usr, app string) error {
 	return nil
 }
 
-func tidyModule(app string) error {
+func tidyModule(ctx context.Context, app string) error {
 	c := exec.Command("go", "mod", "tidy")
 	c.Dir = path.Join(".", app)
 

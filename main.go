@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -16,8 +17,11 @@ var (
 func main() {
 	prompt.Content(fmt.Sprintf("Starting daprme wizard (%s)", Version))
 
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	// collect
-	app, err := prompt.Start()
+	app, err := prompt.Start(ctx)
 	if err != nil {
 		fmt.Printf("Error: %v", err)
 		os.Exit(-1)
@@ -29,7 +33,7 @@ func main() {
 
 	// create
 	if prompt.ForBool("Create project?") {
-		if err := project.Make(app); err != nil {
+		if err := project.Make(ctx, app); err != nil {
 			fmt.Printf("Error creating project: %v", err)
 			os.Exit(-1)
 		}
@@ -40,7 +44,7 @@ func main() {
 	// init
 	if prompt.ForBool("Initialize project?") {
 		usr := prompt.ForString("GitHub org or username?", "me")
-		if err := project.Initialize(usr, app.Meta.Name); err != nil {
+		if err := project.Initialize(ctx, usr, app.Meta.Name); err != nil {
 			fmt.Printf("Error initializing project: %v", err)
 			os.Exit(-1)
 		}
