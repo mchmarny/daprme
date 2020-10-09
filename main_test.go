@@ -4,21 +4,49 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/dapr-templates/daprme/pkg/cmd"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/dapr-templates/daprme/pkg/writer"
+	"github.com/pkg/errors"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestMarshaling(t *testing.T) {
-	testFile := "test-data/app.yaml"
+const (
+	testFile = "test-data/app.yaml"
+)
+
+func getTestApp() (app *model.App, err error) {
 	b, err := ioutil.ReadFile(testFile)
 	if err != nil {
-		t.Logf("Error reading sample: %s", testFile)
+		return nil, errors.Wrapf(err, "error reading test file: %s", testFile)
+	}
+	a, err := model.Unmarshal(b)
+	if err != nil {
+		return nil, errors.Wrapf(err, "error parsing test file content: %s", testFile)
+	}
+	return a, nil
+}
+
+func TestIntegration(t *testing.T) {
+	app, err := getTestApp()
+	if err != nil {
 		t.FailNow()
 	}
 
-	app, err := model.Unmarshal(b)
+	if err := writer.Make(app); err != nil {
+		t.Logf("Error making project: %v", err)
+		t.FailNow()
+	}
+
+	if err := cmd.InitProject("test", app.Meta.Name); err != nil {
+		t.Logf("Error initializing project: %v", err)
+		t.FailNow()
+	}
+}
+
+func TestMarshaling(t *testing.T) {
+	app, err := getTestApp()
 	if err != nil {
-		t.Logf("Error parsing content: %s", b)
 		t.FailNow()
 	}
 
@@ -29,24 +57,11 @@ func TestMarshaling(t *testing.T) {
 	}
 
 	t.Logf("\n%s", b2)
-}
 
-func TestIntegration(t *testing.T) {
-	testFile := "test-data/app.yaml"
-	b, err := ioutil.ReadFile(testFile)
+	app2, err := model.Unmarshal(b2)
 	if err != nil {
-		t.Logf("Error reading sample: %s", testFile)
 		t.FailNow()
 	}
 
-	app, err := model.Unmarshal(b)
-	if err != nil {
-		t.Logf("Error parsing content: %s", b)
-		t.FailNow()
-	}
-
-	if err := writer.Make(app); err != nil {
-		t.Logf("Error making project: %v", err)
-		t.FailNow()
-	}
+	assert.Equal(t, app, app2)
 }

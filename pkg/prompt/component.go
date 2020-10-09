@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dapr-templates/daprme/pkg/builder/format"
+	"github.com/dapr-templates/daprme/pkg/format"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )

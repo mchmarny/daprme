@@ -9,8 +9,8 @@ tidy: ## Updates the go modules and vendors all dependancies
 	go mod tidy
 	go mod vendor
 
-.PHONY: bin
-bin: ## Compiles resource files into binary data resource 
+.PHONY: res
+res: ## Compiles resource files into binary data resource 
 	go-bindata -pkg writer -o pkg/writer/resource.go template/...
 
 .PHONY: test

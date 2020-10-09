@@ -1,9 +1,9 @@
 package builder
 
 import (
-	"github.com/dapr-templates/daprme/pkg/builder/print"
-	"github.com/dapr-templates/daprme/pkg/builder/prompt"
 	"github.com/dapr-templates/daprme/pkg/model"
+	"github.com/dapr-templates/daprme/pkg/print"
+	"github.com/dapr-templates/daprme/pkg/prompt"
 	"github.com/pkg/errors"
 )
 
