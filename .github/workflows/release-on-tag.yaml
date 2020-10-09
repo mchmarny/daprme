@@ -85,7 +85,7 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@master
       with:
-        name: daprme_archive
+        name: daprme
         path: ${{ env.ARCHIVE_OUTDIR }}
 
   publish:
@@ -93,7 +93,7 @@ jobs:
     needs: build
     if: startswith(github.ref, 'refs/tags/v')
     env:
-      ARTIFACT_DIR: ./release
+      ARTIFACT_DIR: ./daprme
     runs-on: ubuntu-latest
     steps:
       - name: download artifacts
