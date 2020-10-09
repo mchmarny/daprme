@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.azure.servicebusqueues
+  metadata:
+  - name: connectionString
+    value: "sb://************"
+  - name: queueName
+    value: queue1
+  - name: ttlInSeconds
+    value: 60

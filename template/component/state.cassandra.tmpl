@@ -1,0 +1,23 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: state.cassandra
+  metadata:
+  - name: hosts
+    value: <REPLACE-WITH-COMMA-DELIMITED-HOSTS> # Required. Example: cassandra.cassandra.svc.cluster.local
+  - name: username
+    value: <REPLACE-WITH-PASSWORD> # Optional. default: ""
+  - name: password
+    value: <REPLACE-WITH-PASSWORD> # Optional. default: ""
+  - name: consistency
+    value: <REPLACE-WITH-CONSISTENCY> # Optional. default: "All"
+  - name: table
+    value: <REPLACE-WITH-TABLE> # Optional. default: "items"
+  - name: keyspace
+    value: <REPLACE-WITH-KEYSPACE> # Optional. default: "dapr"
+  - name: protoVersion
+    value: <REPLACE-WITH-PROTO-VERSION> # Optional. default: "4"
+  - name: replicationFactor
+    value: <REPLACE-WITH-REPLICATION-FACTOR> #  Optional. default: "1"

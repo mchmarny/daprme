@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.azure.blobstorage
+  metadata:
+  - name: storageAccount
+    value: myStorageAccountName
+  - name: storageAccessKey
+    value: ***********
+  - name: container
+    value: container1
+  - name: decodeBase64
+    value: true

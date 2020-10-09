@@ -1,0 +1,9 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.postgres
+  metadata:
+  - name: url # Required
+    value: <CONNECTION_STRING>

@@ -1,0 +1,25 @@
+Name:  my-app
+Protocol: HTTP
+Port: 8080
+Pubsubs:
+- component:
+    ComponentType: pubsub.azure.servicebus
+    ComponentName: azureservicebus-pubsub
+  TopicName: messages
+- component:
+    ComponentType: pubsub.hazelcast
+    ComponentName: hazelcast-pubsub
+  TopicName: messages
+Bindings:
+- component:
+    ComponentType: bindings.kafka
+    ComponentName: kafka-binding
+Services: []
+UsesClient: true
+Components:
+- ComponentType: state.cassandra
+  ComponentName: cassandra-store
+- ComponentType: pubsub.mqtt
+  ComponentName: mqtt-pubsub
+- ComponentType: bindings.azure.eventhubs
+  ComponentName: azureeventhubs-binding

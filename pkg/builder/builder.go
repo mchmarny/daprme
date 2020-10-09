@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	morePrompt = "Add another?"
+	morePrompt     = "Add another?"
+	appNameDefault = "my-app"
 )
 
 // Start starts the wizard
@@ -18,7 +19,7 @@ func Start() (app *model.App, err error) {
 	print.Header("Application")
 
 	// name
-	app.Name = prompt.ForString("Name: ", "my-app")
+	app.Name = prompt.ForString("Name: ", appNameDefault)
 
 	// protocol
 	protocol, err := prompt.ForOption("App protocol: ", model.HTTPProtocol, model.GRPCProtocol)
@@ -110,7 +111,7 @@ func Start() (app *model.App, err error) {
 	// secret
 	app.Components = make([]*model.Component, 0)
 	if prompt.ForBool("Use secrets?") {
-		secretComp, err := prompt.ForComponents(model.SecretComponentTypes(), "secret")
+		secretComp, err := prompt.ForComponents(model.SecretComponentTypes(), "secret", "secretstores")
 		if err != nil {
 			return nil, errors.Errorf("Error parsing answer: %v.", err)
 		}
@@ -125,7 +126,7 @@ func Start() (app *model.App, err error) {
 
 		// state
 		if prompt.ForBool("Add state components?") {
-			stateComp, err := prompt.ForComponents(model.StateComponentTypes(), "store")
+			stateComp, err := prompt.ForComponents(model.StateComponentTypes(), "store", "state")
 			if err != nil {
 				return nil, errors.Errorf("Error parsing answer: %v.", err)
 			}
@@ -134,7 +135,7 @@ func Start() (app *model.App, err error) {
 
 		// pubsub
 		if prompt.ForBool("Add pub/sub components?") {
-			pubsubComp, err := prompt.ForComponents(model.PubsubComponentTypes(), "pubsub")
+			pubsubComp, err := prompt.ForComponents(model.PubsubComponentTypes(), "pubsub", "pubsub")
 			if err != nil {
 				return nil, errors.Errorf("Error parsing answer: %v.", err)
 			}
@@ -143,7 +144,7 @@ func Start() (app *model.App, err error) {
 
 		// binding
 		if prompt.ForBool("Add output binding components?") {
-			outBindComp, err := prompt.ForComponents(model.OutputBindingComponentTypes(), "binding")
+			outBindComp, err := prompt.ForComponents(model.OutputBindingComponentTypes(), "binding", "bindings")
 			if err != nil {
 				return nil, errors.Errorf("Error parsing answer: %v.", err)
 			}

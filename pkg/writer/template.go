@@ -4,11 +4,10 @@ import (
 	"os"
 	tmpl "text/template"
 
-	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
 
-func execTemplate(app *model.App, out, temp string) error {
+func execTemplate(app interface{}, out, temp string) error {
 	if app == nil {
 		return errors.New("invalid app input")
 	}
@@ -23,7 +22,12 @@ func execTemplate(app *model.App, out, temp string) error {
 	}
 	defer f.Close()
 
-	t, err := tmpl.ParseFiles(temp)
+	data, err := Asset(temp)
+	if err != nil {
+		return errors.Wrapf(err, "Error getting asset: %s.", temp)
+	}
+
+	t, err := tmpl.New("auto").Parse(string(data))
 	if err != nil {
 		return errors.Wrapf(err, "error parsing template: %s", temp)
 	}

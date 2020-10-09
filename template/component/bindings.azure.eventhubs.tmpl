@@ -1,0 +1,19 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.azure.eventhubs
+  metadata:
+  - name: connectionString      # Azure EventHubs connection string
+    value: "Endpoint=sb://****"
+  - name: consumerGroup         # EventHubs consumer group
+    value: "group1"
+  - name: storageAccountName    # Azure Storage Account Name
+    value: "accountName"   
+  - name: storageAccountKey     # Azure Storage Account Key
+    value: "accountKey"                
+  - name: storageContainerName  # Azure Storage Container Name
+    value: "containerName"    
+  - name: partitionID           # (Optional) PartitionID to send and receive events
+    value: 0

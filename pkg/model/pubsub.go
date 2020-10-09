@@ -9,16 +9,16 @@ type Pubsub struct {
 // PubsubComponentTypes lists all supported components
 func PubsubComponentTypes() []string {
 	return []string{
-		"redis",
-		"natsstreaming",
 		"azure.eventhubs",
 		"azure.servicebus",
-		"rabbitmq",
-		"hazelcast",
 		"gcp.pubsub",
+		"hazelcast",
 		"kafka",
-		"snssqs",
 		"mqtt",
+		"natsstreaming",
 		"pulsar",
+		"rabbitmq",
+		"redis",
+		"snssqs",
 	}
 }

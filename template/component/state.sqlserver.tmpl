@@ -1,0 +1,11 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: state.sqlserver
+  metadata:
+  - name: connectionString
+    value: <REPLACE-WITH-CONNECTION-STRING>
+  - name: tableName
+    value: <REPLACE-WITH-TABLE-NAME>

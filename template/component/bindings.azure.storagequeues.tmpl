@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.azure.storagequeues
+  metadata:
+  - name: storageAccount
+    value: "account1"
+  - name: storageAccessKey
+    value: "***********"
+  - name: queue
+    value: "myqueue"
+  - name: ttlInSeconds
+    value: "60"

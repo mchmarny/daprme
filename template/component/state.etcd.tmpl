@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: state.etcd
+  metadata:
+  - name: endpoints
+    value: <REPLACE-WITH-COMMA-DELIMITED-ENDPOINTS> # Required. Example: "etcd-etcd.default.svc.cluster.local:2379"
+  - name: dialTimeout
+    value: <REPLACE-WITH-DIAL-TIMEOUT> # Required. Example: "5s"
+  - name: operationTimeout
+    value: <REPLACE-WITH-OPERATION-TIMEOUT> # Optional. default: "10S"

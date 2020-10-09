@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: state.azure.blobstorage
+  metadata:
+  - name: accountName
+    value: <REPLACE-WITH-ACCOUNT-NAME>
+  - name: accountKey
+    value: <REPLACE-WITH-ACCOUNT-KEY>
+  - name: containerName
+    value: <REPLACE-WITH-CONTAINER-NAME>

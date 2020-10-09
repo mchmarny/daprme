@@ -1,0 +1,31 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: pubsub.gcp.pubsub
+  metadata:
+  - name: topic
+    value: <TOPIC_NAME>
+  - name: type
+    value: service_account
+  - name: project_id
+    value: <PROJECT_ID> # replace
+  - name: private_key_id
+    value: <PRIVATE_KEY_ID> #replace
+  - name: client_email
+    value: <CLIENT_EMAIL> #replace
+  - name: client_id
+    value: <CLIENT_ID> # replace
+  - name: auth_uri
+    value: https://accounts.google.com/o/oauth2/auth
+  - name: token_uri
+    value: https://oauth2.googleapis.com/token
+  - name: auth_provider_x509_cert_url
+    value: https://www.googleapis.com/oauth2/v1/certs
+  - name: client_x509_cert_url
+    value: https://www.googleapis.com/robot/v1/metadata/x509/<PROJECT_NAME>.iam.gserviceaccount.com
+  - name: private_key
+    value: <PRIVATE_KEY> # replace x509 cert here
+  - name: disableEntityManagement
+    value: <REPLACE-WITH-DISABLE-ENTITY-MANAGEMENT> # Optional. Default: false. When set to true, topics and subscriptions do not get created automatically.

@@ -1,0 +1,11 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: pubsub.pulsar
+  metadata:
+  - name: host
+    value: <REPLACE WITH PULSAR URL> #default is localhost:6650
+  - name: enableTLS
+    value: <TRUE/FALSE>

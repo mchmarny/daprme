@@ -1,0 +1,21 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: pubsub.rabbitmq
+  metadata:
+  - name: host
+    value: <REPLACE-WITH-HOST> # Required. Example: "amqp://rabbitmq.default.svc.cluster.local:5672", "amqp://localhost:5672"
+  - name: consumerID
+    value: <REPLACE-WITH-CONSUMER-ID> # Required. Any unique ID. Example: "myConsumerID"
+  - name: durable
+    value: <REPLACE-WITH-DURABLE> # Optional. Default: "false"
+  - name: deletedWhenUnused
+    value: <REPLACE-WITH-DELETE-WHEN-UNUSED> # Optional. Default: "false"
+  - name: autoAck
+    value: <REPLACE-WITH-AUTO-ACK> # Optional. Default: "false"
+  - name: deliveryMode
+    value: <REPLACE-WITH-DELIVERY-MODE> # Optional. Default: "0". Values between 0 - 2.
+  - name: requeueInFailure
+    value: <REPLACE-WITH-REQUEUE-IN-FAILURE> # Optional. Default: "false".

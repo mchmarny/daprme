@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.aws.s3
+  metadata:
+  - name: region
+    value: us-west-2
+  - name: accessKey
+    value: *****************
+  - name: secretKey
+    value: *****************
+  - name: bucket
+    value: mybucket

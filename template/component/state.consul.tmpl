@@ -1,0 +1,17 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: state.consul
+  metadata:
+  - name: datacenter
+    value: <REPLACE-WITH-DATA-CENTER> # Required. Example: dc1
+  - name: httpAddr
+    value: <REPLACE-WITH-CONSUL-HTTP-ADDRESS> # Required. Example: "consul.default.svc.cluster.local:8500"
+  - name: aclToken
+    value: <REPLACE-WITH-ACL-TOKEN> # Optional. default: ""
+  - name: scheme
+    value: <REPLACE-WITH-SCHEME> # Optional. default: "http"
+  - name: keyPrefixPath
+    value: <REPLACE-WITH-TABLE> # Optional. default: ""

@@ -1,0 +1,19 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.aws.kinesis
+  metadata:
+  - name: region
+    value: AWS_REGION #replace
+  - name: accessKey
+    value: AWS_ACCESS_KEY # replace
+  - name: secretKey
+    value: AWS_SECRET_KEY #replace
+  - name: streamName
+    value: KINESIS_STREAM_NAME # Kinesis stream name
+  - name: consumerName 
+    value: KINESIS_CONSUMER_NAME # Kinesis consumer name 
+  - name: mode
+    value: shared # shared - Shared throughput or extended - Extended/Enhanced fanout

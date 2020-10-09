@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: messagebus
+spec:
+  type: pubsub.snssqs
+  metadata:
+    - name: awsEndpoint
+      value: http://localhost:4566
+    # Use us-east-1 for localstack
+    - name: awsRegion
+      value: us-east-1

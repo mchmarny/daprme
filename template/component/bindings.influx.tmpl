@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: bindings.influx
+  metadata:
+  - name: url # Required
+    value: <INFLUX-DB-URL>
+  - name: token # Required
+    value: <TOKEN>
+  - name: org # Required
+    value: <ORG>
+  - name: bucket # Required
+    value: <BUCKET>

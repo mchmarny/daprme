@@ -11,7 +11,7 @@ import (
 )
 
 // ForComponents collects client component info
-func ForComponents(list []string, comp string) ([]*model.Component, error) {
+func ForComponents(list []string, suffix, comp string) ([]*model.Component, error) {
 	out := make([]*model.Component, 0)
 	for i, o := range list {
 		fmt.Printf(fmt.Sprintf(" [%2d]: %s\n", i, o))
@@ -26,8 +26,8 @@ func ForComponents(list []string, comp string) ([]*model.Component, error) {
 		}
 
 		c := &model.Component{
-			ComponentName: fmt.Sprintf("%s-%s", format.CodeSafeString(list[i]), comp),
-			ComponentType: list[i],
+			ComponentName: fmt.Sprintf("%s-%s", format.CodeSafeString(list[i]), suffix),
+			ComponentType: fmt.Sprintf("%s.%s", comp, list[i]),
 		}
 
 		out = append(out, c)

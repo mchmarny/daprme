@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: {{.ComponentName}}
+spec:
+  type: pubsub.azure.eventhubs
+  metadata:
+  - name: connectionString
+    value: <REPLACE-WITH-CONNECTION-STRING> # Required. "Endpoint=sb://****"
+  - name: storageAccountName
+    value: <REPLACE-WITH-STORAGE-ACCOUNT-NAME> # Required.
+  - name: storageAccountKey
+    value: <REPLACE-WITH-STORAGE-ACCOUNT-KEY> # Required.
+  - name: storageContainerName
+    value: <REPLACE-WITH-CONTAINER-NAME > # Required.

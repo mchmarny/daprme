@@ -1,0 +1,11 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: cloudstate
+spec:
+  type: state.cloudstate
+  metadata:
+  - name: host
+    value: "localhost:8013"
+  - name: serverPort
+    value: "8080"

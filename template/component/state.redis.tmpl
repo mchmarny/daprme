@@ -1,0 +1,15 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+spec:
+  type: state.redis
+  metadata:
+  - name: redisHost
+    value: <HOST>
+  - name: redisPassword
+    value: <PASSWORD>
+  - name: enableTLS
+    value: <bool> # Optional. Allowed: true, false.
+  - name: failover
+    value: <bool> # Optional. Allowed: true, false.

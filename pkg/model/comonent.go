@@ -6,39 +6,55 @@ type Component struct {
 	ComponentName string `yaml:"ComponentName"`
 }
 
+// GetType returns the name of the component type
+func (c *Component) GetType() string {
+	return c.ComponentType
+}
+
+// GetName returns the name of the component
+func (c *Component) GetName() string {
+	return c.ComponentName
+}
+
+// Componentable defines the component interface
+type Componentable interface {
+	GetType() string
+	GetName() string
+}
+
 // StateComponentTypes lists all supported components
 func StateComponentTypes() []string {
 	return []string{
-		"redis",
-		"consul",
+		"aerospike",
 		"azure.blobstorage",
 		"azure.cosmosdb",
 		"azure.tablestorage",
-		"etcd",
 		"cassandra",
+		"cloudstate.crdt",
+		"consul",
+		"couchbase",
+		"etcd",
+		"gcp.firestore",
+		"hazelcast",
 		"memcached",
 		"mongodb",
-		"zookeeper",
-		"gcp.firestore",
 		"postgresql",
-		"sqlserver",
-		"hazelcast",
-		"cloudstate.crdt",
-		"couchbase",
-		"aerospike",
+		"redis",
 		"rethinkdb",
+		"sqlserver",
+		"zookeeper",
 	}
 }
 
 // SecretComponentTypes lists all supported components
 func SecretComponentTypes() []string {
 	return []string{
-		"kubernetes",
-		"azure.keyvault",
-		"hashicorp.vault",
 		"aws.secretmanager",
+		"azure.keyvault",
 		"gcp.secretmanager",
-		"local.file",
+		"hashicorp.vault",
+		"kubernetes",
 		"local.env",
+		"local.file",
 	}
 }

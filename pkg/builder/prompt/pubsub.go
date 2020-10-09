@@ -7,31 +7,33 @@ import (
 
 	"github.com/dapr-templates/daprme/pkg/builder/format"
 	"github.com/dapr-templates/daprme/pkg/model"
-	"github.com/pkg/errors"
 )
 
 // ForPubSub collects pubsub info
 func ForPubSub() (*model.Pubsub, error) {
 	ps := &model.Pubsub{}
-	fmt.Println("What type of PubSub component:")
+	fmt.Println("What type of pub/sub component:")
 	for i, o := range model.PubsubComponentTypes() {
 		fmt.Printf(fmt.Sprintf(" [%2d]: %s\n", i, o))
 	}
 	fmt.Println()
 
+	var selectType string
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		i := readInt(reader, 0)
 		if i < 0 || i >= len(model.PubsubComponentTypes()) {
-			return nil, errors.Errorf("input out of range: %d", i)
+			fmt.Println(outOfRangeMessage)
+			return ForPubSub()
 		}
 
-		ps.ComponentType = model.PubsubComponentTypes()[i]
+		selectType = model.PubsubComponentTypes()[i]
 		break
 	}
 
 	// comp and topic name
-	ps.ComponentName = ForString("Component name: ", fmt.Sprintf("%s-pubsub", format.CodeSafeString(ps.ComponentType)))
+	ps.ComponentType = fmt.Sprintf("pubsub.%s", selectType)
+	ps.ComponentName = ForString("Component name: ", fmt.Sprintf("%s-pubsub", format.CodeSafeString(selectType)))
 	ps.TopicName = ForString("Topic name: ", "messages")
 
 	return ps, nil
