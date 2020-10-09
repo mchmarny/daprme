@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -10,11 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const (
-	testFile = "test-data/app.yaml"
-)
-
-func getTestApp() (app *model.App, err error) {
+func getTestApp(t string) (app *model.App, err error) {
+	testFile := fmt.Sprintf("test-data/%s.yaml", t)
 	b, err := ioutil.ReadFile(testFile)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error reading test file: %s", testFile)
@@ -27,11 +25,26 @@ func getTestApp() (app *model.App, err error) {
 }
 
 func TestIntegration(t *testing.T) {
-	app, err := getTestApp()
+	app, err := getTestApp("grpc")
 	if err != nil {
 		t.FailNow()
 	}
+	testIntegration(t, app)
 
+	app, err = getTestApp("http")
+	if err != nil {
+		t.FailNow()
+	}
+	testIntegration(t, app)
+
+	app, err = getTestApp("cli")
+	if err != nil {
+		t.FailNow()
+	}
+	testIntegration(t, app)
+}
+
+func testIntegration(t *testing.T, app *model.App) {
 	if err := project.Make(app); err != nil {
 		t.Logf("Error making project: %v", err)
 		t.FailNow()
@@ -44,11 +57,24 @@ func TestIntegration(t *testing.T) {
 }
 
 func TestMarshaling(t *testing.T) {
-	app, err := getTestApp()
+	app, err := getTestApp("http")
 	if err != nil {
 		t.FailNow()
 	}
+	testMarshaling(t, app)
+	app, err = getTestApp("grpc")
+	if err != nil {
+		t.FailNow()
+	}
+	testMarshaling(t, app)
+	app, err = getTestApp("cli")
+	if err != nil {
+		t.FailNow()
+	}
+	testMarshaling(t, app)
+}
 
+func testMarshaling(t *testing.T, app *model.App) {
 	b2, err := app.Marshal()
 	if err != nil {
 		t.Logf("Error marshaling app: %v", err)
@@ -62,5 +88,5 @@ func TestMarshaling(t *testing.T) {
 		t.FailNow()
 	}
 
-	assert.Equal(t, app, app2)
+	assert.Equal(t, app.Meta, app2.Meta)
 }

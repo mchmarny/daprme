@@ -23,29 +23,31 @@ func Start() (app *model.App, err error) {
 	// name
 	app.Meta.Name = ForString("Name: ", appNameDefault)
 
-	// protocol
-	protocol, err := ForOption("App protocol: ", model.HTTPProtocol, model.GRPCProtocol)
+	// app type
+	appType, err := ForOption("App type: ", model.HTTP, model.GRPC, model.CLI)
 	if err != nil {
 		return nil, errors.Errorf("unable to read input: %v", err)
 	}
 	var defaultPort int
-	switch protocol {
-	case model.HTTPProtocol:
-		app.Meta.Protocol = model.HTTPProtocol
+	switch appType {
+	case model.HTTP:
+		app.Meta.Type = model.HTTP
 		defaultPort = 8080
-	case model.GRPCProtocol:
-		app.Meta.Protocol = model.GRPCProtocol
+	case model.GRPC:
+		app.Meta.Type = model.GRPC
 		defaultPort = 50050
 	default:
-		return nil, errors.Errorf("invalid protocol input: %s", protocol)
+		return nil, errors.Errorf("invalid protocol input: %s", appType)
 	}
 
 	// port
-	appPort, err := ForInt("App protocol port: ", defaultPort)
-	if err != nil {
-		return nil, errors.Errorf("unable to read input: %v", err)
+	if appType != model.CLI {
+		appPort, err := ForInt("App protocol port: ", defaultPort)
+		if err != nil {
+			return nil, errors.Errorf("unable to read input: %v", err)
+		}
+		app.Meta.Port = appPort
 	}
-	app.Meta.Port = appPort
 
 	Header("Pub/Sub")
 

@@ -1,0 +1,15 @@
+Meta:
+  Name: my-cli-app
+  Type: CLI
+  UsesClient: true
+Components:
+- Type: secretstores.local.env
+  Name: localenv-secret
+- Type: state.redis
+  Name: redis-store
+- Type: state.postgresql
+  Name: postgresql-store
+- Type: pubsub.snssqs
+  Name: snssqs-pubsub
+- Type: bindings.twitter
+  Name: twitter-binding

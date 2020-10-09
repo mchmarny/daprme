@@ -10,9 +10,10 @@ import (
 	"strings"
 
 	"github.com/dapr/go-sdk/service/common"
-	{{- if eq .Meta.Protocol "gRPC"}}
+	{{- if eq .Meta.Type "gRPC"}}
   	daprd "github.com/dapr/go-sdk/service/grpc"
-	{{- else}}
+	{{- end}}
+	{{- if eq .Meta.Type "GHTTP"}}
 	daprd "github.com/dapr/go-sdk/service/http"
 	{{- end}}
 	{{- if .Meta.UsesClient}}
@@ -22,7 +23,9 @@ import (
 
 var (
 	logger     = log.New(os.Stdout, "", 0)
+	{{- if ne .Meta.Type "CLI"}}
 	address    = getEnvVar("ADDRESS", ":{{.Meta.Port}}")
+	{{- end}}
 	
 	{{- if .Meta.UsesClient}}
 	client dapr.Client
@@ -35,13 +38,15 @@ var (
 )
 
 func main() {
-	// create Dapr service
-	{{- if eq .Meta.Protocol "gRPC"}}
+	{{- if eq .Meta.Type "gRPC"}}
+	// create gRPC Dapr service
   	s, err := daprd.NewService(serviceAddress)
 	if err != nil {
 		log.Fatalf("failed to start the server: %v", err)
 	}
-	{{- else}}
+	{{- end}}
+	{{- if eq .Meta.Type "HTTP"}}
+	// create HTTP Dapr service
 	s := daprd.NewService(address)
 	{{- end}}
 	{{- if .Meta.UsesClient}}
@@ -61,7 +66,7 @@ func main() {
 	sub{{$i}} := &common.Subscription{
 		PubsubName: pubSubName{{$i}},
 		Topic:      topicName{{$i}},
-		{{- if eq $.Meta.Protocol "HTTP"}}
+		{{- if eq $.Meta.Type "HTTP"}}
 		Route:      fmt.Sprintf("/%s", topicName),
 		{{- end}}
 	}
@@ -87,12 +92,14 @@ func main() {
 
   	{{- end}}
 
-	// start the server
-	{{- if eq .Meta.Protocol "gRPC"}}
+	{{- if eq .Meta.Type "gRPC"}}
+	// start service
   	if err := s.Start(); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
-	{{- else}}
+	{{- end}}
+	{{- if eq .Meta.Type "HTTP"}}
+	// start service
 	if err := s.Start(); err != nil && err != http.ErrServerClosed {
 		logger.Fatalf("error starting service: %v", err)
 	}

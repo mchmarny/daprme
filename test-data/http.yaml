@@ -1,0 +1,9 @@
+Meta:
+  Name: my-http-app
+  Type: HTTP
+  Port: 8080
+Bindings:
+- Type: bindings.cron
+  Name: cron-binding
+Services:
+- Name: myService

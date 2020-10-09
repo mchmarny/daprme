@@ -1,6 +1,6 @@
 Meta:
-  Name: my-app
-  Protocol: gRPC
+  Name: my-grpc-app
+  Type: gRPC
   Port: 50050
   UsesClient: true
 PubSubs:
