@@ -11,7 +11,7 @@ import (
 // ForInt prompts for int answer
 func ForInt(question string, fallback int) int {
 	question = fmt.Sprintf("%s [%d]", question, fallback)
-	fmt.Printf(question + "\n> ")
+	fmt.Printf(question + promptPrefix)
 	reader := bufio.NewReader(os.Stdin)
 	return readInt(reader, fallback)
 }
@@ -19,7 +19,7 @@ func ForInt(question string, fallback int) int {
 func readInt(reader *bufio.Reader, fallback int) int {
 	answer, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println("Invalid input, try again:")
+		fmt.Println(formatErrorMessage)
 		return readInt(reader, fallback)
 	}
 	answer = strings.TrimSuffix(answer, "\n")
@@ -29,7 +29,7 @@ func readInt(reader *bufio.Reader, fallback int) int {
 
 	i, err := strconv.Atoi(answer)
 	if err != nil {
-		fmt.Printf("Input not a number: %s.\n", answer)
+		fmt.Printf(formatErrorMessage)
 		return readInt(reader, fallback)
 	}
 	return i

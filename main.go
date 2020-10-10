@@ -12,11 +12,13 @@ var (
 	// Version will be overritten during build
 	Version = "v0.0.1-default"
 
+	daprVersion = "v0.11.2"
+
 	targetDir = "." // TODO: make optional runtime flag
 )
 
 func main() {
-	prompt.Print("Starting daprme wizard (%s)", Version)
+	prompt.Print("\u2732 daprme (%s, Dapr: %s)", Version, daprVersion)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -40,7 +42,7 @@ func main() {
 		}
 	}
 
-	prompt.Print("Project was created in: %s", app.Meta.Name)
+	prompt.Print("➜ Project was created in: %s", app.Meta.Name)
 
 	// init
 	if prompt.ForBool("Initialize project?") {
@@ -51,6 +53,6 @@ func main() {
 		}
 	}
 
-	prompt.Header("Done, Happy Dapring")
+	prompt.Header("✓ Done, Happy Dapring")
 	os.Exit(0)
 }

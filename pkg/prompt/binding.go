@@ -8,10 +8,6 @@ import (
 	"github.com/dapr-templates/daprme/pkg/model"
 )
 
-const (
-	outOfRangeMessage = "Selection out of range, please try again."
-)
-
 // ForBinding collects binding info
 func ForBinding() *model.Component {
 	b := &model.Component{}

@@ -11,11 +11,14 @@ import (
 )
 
 const (
-	sectionLength   = 80
-	morePrompt      = "Add another?"
-	appNameDefault  = "my-app"
-	httpPortDefault = 8080
-	grpcPortDefault = 50505
+	sectionLength      = 80
+	morePrompt         = "Add another?"
+	appNameDefault     = "my-app"
+	httpPortDefault    = 8080
+	grpcPortDefault    = 50505
+	promptPrefix       = "\n\u2B95  "
+	outOfRangeMessage  = "Selection out of range, try again.\n"
+	formatErrorMessage = "Invalid input, try again.\n"
 )
 
 // Start starts the wizard
@@ -47,7 +50,7 @@ func Start(ctx context.Context) (app *model.App, err error) {
 
 	// port
 	if app.Meta.Type != model.AppTypeCLI {
-		app.Meta.Port = ForInt("App protocol port: ", app.Meta.Port)
+		app.Meta.Port = ForInt("App port: ", app.Meta.Port)
 	}
 
 	Header("Pub/Sub")

@@ -12,12 +12,12 @@ func ForString(question, fallback string) string {
 	if fallback != "" {
 		question = fmt.Sprintf("%s [%s]", question, fallback)
 	}
-	fmt.Printf(question + "\n> ")
+	fmt.Printf(question + promptPrefix)
 
 	reader := bufio.NewReader(os.Stdin)
 	answer, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println("Error parsing answer, please try again")
+		fmt.Println(formatErrorMessage)
 		return ForString(question, fallback)
 	}
 

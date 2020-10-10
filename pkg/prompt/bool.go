@@ -10,12 +10,12 @@ import (
 // ForBool prompts for bool answer
 func ForBool(question string) bool {
 	question = fmt.Sprintf("%s [y] Yes, [n] No", question)
-	fmt.Printf(question + "\n> ")
+	fmt.Printf(question + promptPrefix)
 
 	reader := bufio.NewReader(os.Stdin)
 	answer, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println("Error reading input, try again.")
+		fmt.Println(formatErrorMessage)
 		return ForBool(question)
 	}
 	answer = strings.TrimSuffix(answer, "\n")
