@@ -17,8 +17,8 @@ const (
 	httpPortDefault    = 8080
 	grpcPortDefault    = 50505
 	promptPrefix       = "\n\u2B95  "
-	outOfRangeMessage  = "Selection out of range, try again.\n"
-	formatErrorMessage = "Invalid input, try again.\n"
+	outOfRangeMessage  = "Selection out of range, try again."
+	formatErrorMessage = "Invalid input, try again."
 )
 
 // Start starts the wizard

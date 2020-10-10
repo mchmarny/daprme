@@ -17,7 +17,7 @@ func ForOption(question string, opts ...string) string {
 	reader := bufio.NewReader(os.Stdin)
 	i := readInt(reader, 0)
 	if i < 0 || i >= len(opts) {
-		fmt.Printf(outOfRangeMessage)
+		fmt.Println(outOfRangeMessage)
 		return ForOption(question, opts...)
 	}
 	return opts[i]

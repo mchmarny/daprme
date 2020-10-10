@@ -29,7 +29,7 @@ func readInt(reader *bufio.Reader, fallback int) int {
 
 	i, err := strconv.Atoi(answer)
 	if err != nil {
-		fmt.Printf(formatErrorMessage)
+		fmt.Println(formatErrorMessage)
 		return readInt(reader, fallback)
 	}
 	return i
