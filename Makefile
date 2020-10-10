@@ -1,8 +1,17 @@
 APP_NAME         =daprme
 RELEASE_VERSION  =v0.4.9
+LINTER_VERSION   =v1.31.0
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
 all: help
+
+.PHONY: devenv
+devenv: ## Sets up development envirnment
+	go get -u github.com/go-bindata/go-bindata/...
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | \
+		sh -s -- -b $(go env GOPATH)/bin $(LINTER_VERSION)
+	golangci-lint --version
+
 
 .PHONY: tidy
 tidy: ## Updates the go modules and vendors all dependancies 

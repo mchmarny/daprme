@@ -36,4 +36,50 @@ Run `daprme` and follow the prompts
 
 ```shell
 daprme
-````
+```
+
+## Adding Language Support 
+
+To learn about ways you can contribute and how to setup your development environment check the [CONTRIBUTING.md](./CONTRIBUTING.md) doc. 
+
+The best place to start is adding support for additional languages. `daprme` is uses Go templating, so adding addition language support is as simple as providing language specific templates in the [template](./template) directory:
+
+* `main.tmpl` - the code implementing CLI, gRPC, or HTTP application 
+* `docker.tmpl` - Dockerfile to containerize the application 
+* `ignore.tmpl` - the git ignore file for that specific language 
+* `make.tmpl` - automation to perform the most common tasks like `test`, `build image`, or `dapr run`
+
+You can use any value from the context `daprme` passes to these templates. Here is an example of a context resulting from the user selecting a gRPC service application type in Go:
+
+```yaml
+Meta:
+  Name: demo
+  Type: gRPC
+  Lang: go
+  Main: main.go
+  Port: 50050
+  UsesClient: true
+PubSubs:
+- Type: pubsub.redis
+  Name: redis-pubsub
+  Topic: messages
+Bindings:
+- Type: bindings.cron
+  Name: cron-binding
+Services:
+- Name: myService
+- Name: myOtherService
+Components:
+- Type: secretstores.local.env
+  Name: localenv-secret
+- Type: state.redis
+  Name: redis-store
+```
+
+In addition, you need to implement the language specific project initialization steps in [pkg/lang](./pkg/lang) package. This can wrap as many steps as you need to ensure that the resulting project is ready for user to start developing. 
+
+> When possible, ame for runnable project vs advanced features that require users to perform additional "plumbing" steps. 
+
+## Code of Conduct
+
+Please refer to our included [Code of Conduct](./CODE_OF_CONDUCT.md)
