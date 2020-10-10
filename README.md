@@ -32,7 +32,7 @@ The `daprme` CLI includes support for OSes (architecture support coming soon)
 
 ## Usage 
 
-> Assuming the `daprme` CLI is already in PATh (see Installation above)
+> Assuming the `daprme` CLI is already in PATH (see Installation above)
 
 Run `daprme` and follow the prompts
 
