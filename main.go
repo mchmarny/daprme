@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/dapr-templates/daprme/pkg/project"
@@ -15,7 +14,7 @@ var (
 )
 
 func main() {
-	prompt.Content(fmt.Sprintf("Starting daprme wizard (%s)", Version))
+	prompt.Print("Starting daprme wizard (%s)", Version)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -23,7 +22,7 @@ func main() {
 	// collect
 	app, err := prompt.Start(ctx)
 	if err != nil {
-		fmt.Printf("Error: %v", err)
+		prompt.Print("Error: %v", err)
 		os.Exit(-1)
 	}
 
@@ -34,18 +33,18 @@ func main() {
 	// create
 	if prompt.ForBool("Create project?") {
 		if err := project.Make(ctx, app); err != nil {
-			fmt.Printf("Error creating project: %v", err)
+			prompt.Print("Error creating project: %v", err)
 			os.Exit(-1)
 		}
 	}
 
-	prompt.Content(fmt.Sprintf("Project was created in: %s\n", app.Meta.Name))
+	prompt.Print("Project was created in: %s", app.Meta.Name)
 
 	// init
 	if prompt.ForBool("Initialize project?") {
 		usr := prompt.ForString("GitHub org or username?", "me")
-		if err := project.Initialize(ctx, usr, app.Meta.Name); err != nil {
-			fmt.Printf("Error initializing project: %v", err)
+		if err := project.Initialize(ctx, usr, app); err != nil {
+			prompt.Print("Error initializing project: %v", err)
 			os.Exit(-1)
 		}
 	}

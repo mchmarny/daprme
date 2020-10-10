@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/dapr-templates/daprme/pkg/lang"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
@@ -36,11 +37,13 @@ func Start(ctx context.Context) (app *model.App, err error) {
 	}
 
 	// lang
-	app.Meta.Lang = ForOption("Language: ", model.LangGo)
-	switch app.Meta.Lang {
-	case model.LangGo:
-		app.Meta.Main = "main.go"
+	app.Meta.Lang = ForOption("Language: ", lang.GetLangs()...)
+	langProvider, err := lang.MakeConfigurable(app.Meta.Lang)
+	if err != nil {
+		return nil, errors.Wrap(err, "error configuring language")
 	}
+	projectConfig := langProvider.GetProjectConfig()
+	app.Meta.Main = projectConfig.Main
 
 	// port
 	if app.Meta.Type != model.AppTypeCLI {
@@ -167,6 +170,13 @@ func codeSafeString(val string) string {
 func Content(v interface{}) {
 	fmt.Println()
 	fmt.Println(v)
+	fmt.Println()
+}
+
+// Print prints to console
+func Print(text string, args ...interface{}) {
+	fmt.Println()
+	fmt.Printf(text, args...)
 	fmt.Println()
 }
 

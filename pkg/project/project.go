@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/dapr-templates/daprme/pkg/lang"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
@@ -35,25 +36,25 @@ func Make(ctx context.Context, app *model.App) error {
 
 	// run templates
 	makefilePath := path.Join(outDir, "Makefile")
-	templateMakePath := path.Join(templateDir, fmt.Sprintf("make-%s.tmpl", app.Meta.Lang))
+	templateMakePath := path.Join(templateDir, app.Meta.Lang, "make.tmpl")
 	if err := execTemplate(app, makefilePath, templateMakePath); err != nil {
 		return errors.Wrap(err, "Error creating makefile.")
 	}
 
 	mainPath := path.Join(outDir, app.Meta.Main)
-	templateMainPath := path.Join(templateDir, fmt.Sprintf("main-%s.tmpl", app.Meta.Lang))
+	templateMainPath := path.Join(templateDir, app.Meta.Lang, "main.tmpl")
 	if err := execTemplate(app, mainPath, templateMainPath); err != nil {
 		return errors.Wrapf(err, "Error creating %s", mainPath)
 	}
 
 	dockerPath := path.Join(outDir, "Dockerfile")
-	templateDockerPath := path.Join(templateDir, fmt.Sprintf("docker-%s.tmpl", app.Meta.Lang))
+	templateDockerPath := path.Join(templateDir, app.Meta.Lang, "docker.tmpl")
 	if err := execTemplate(app, dockerPath, templateDockerPath); err != nil {
 		return errors.Wrap(err, "Error creating dockerfile.")
 	}
 
 	ignorePath := path.Join(outDir, ".gitignore")
-	templateIgnorePath := path.Join(templateDir, fmt.Sprintf("ignore-%s.tmpl", app.Meta.Lang))
+	templateIgnorePath := path.Join(templateDir, app.Meta.Lang, "ignore.tmpl")
 	if err := execTemplate(app, ignorePath, templateIgnorePath); err != nil {
 		return errors.Wrap(err, "Error creating ignorefile.")
 	}
@@ -79,6 +80,24 @@ func Make(ctx context.Context, app *model.App) error {
 		}
 	}
 
+	return nil
+}
+
+// Initialize initializes project
+func Initialize(ctx context.Context, usr string, app *model.App) error {
+	if app == nil {
+		return errors.Errorf("app instance required")
+	}
+	if usr == "" {
+		return errors.Errorf("user required")
+	}
+	langProvider, err := lang.MakeConfigurable(app.Meta.Lang)
+	if err != nil {
+		return errors.Wrap(err, "Error initializing language")
+	}
+	if err := langProvider.InitializeProject(ctx, usr, app.Meta.Name); err != nil {
+		return errors.Wrap(err, "Error initializing project")
+	}
 	return nil
 }
 

@@ -52,7 +52,7 @@ func testIntegration(t *testing.T, app *model.App) {
 		t.FailNow()
 	}
 
-	if err := project.Initialize(ctx, "test", app.Meta.Name); err != nil {
+	if err := project.Initialize(ctx, "test", app); err != nil {
 		t.Logf("Error initializing project: %v", err)
 		t.FailNow()
 	}
