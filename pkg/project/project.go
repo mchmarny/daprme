@@ -18,13 +18,13 @@ const (
 )
 
 // Make creates project
-func Make(ctx context.Context, app *model.App) error {
+func Make(ctx context.Context, app *model.App, dir string) error {
 	if app == nil {
 		return errors.Errorf("App instance required.")
 	}
 
 	// create directories
-	outDir := path.Join(".", app.Meta.Name)
+	outDir := path.Join(dir, app.Meta.Name)
 	if err := createDir(outDir); err != nil {
 		return errors.Wrapf(err, "Error creating project dir: %s.", outDir)
 	}
@@ -84,7 +84,7 @@ func Make(ctx context.Context, app *model.App) error {
 }
 
 // Initialize initializes project
-func Initialize(ctx context.Context, usr string, app *model.App) error {
+func Initialize(ctx context.Context, dir, usr string, app *model.App) error {
 	if app == nil {
 		return errors.Errorf("app instance required")
 	}
@@ -95,7 +95,7 @@ func Initialize(ctx context.Context, usr string, app *model.App) error {
 	if err != nil {
 		return errors.Wrap(err, "Error initializing language")
 	}
-	if err := langProvider.InitializeProject(ctx, usr, app.Meta.Name); err != nil {
+	if err := langProvider.InitializeProject(ctx, dir, usr, app.Meta.Name); err != nil {
 		return errors.Wrap(err, "Error initializing project")
 	}
 	return nil

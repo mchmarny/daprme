@@ -15,7 +15,7 @@ const (
 
 // Configurable provides lang specific project info functionality
 type Configurable interface {
-	InitializeProject(ctx context.Context, usr, app string) error
+	InitializeProject(ctx context.Context, dir, usr, app string) error
 	GetProjectConfig() *model.Project
 }
 

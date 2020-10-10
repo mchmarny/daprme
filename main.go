@@ -11,6 +11,8 @@ import (
 var (
 	// Version will be overritten during build
 	Version = "v0.0.1-default"
+
+	targetDir = "." // TODO: make optional runtime flag
 )
 
 func main() {
@@ -32,7 +34,7 @@ func main() {
 
 	// create
 	if prompt.ForBool("Create project?") {
-		if err := project.Make(ctx, app); err != nil {
+		if err := project.Make(ctx, app, targetDir); err != nil {
 			prompt.Print("Error creating project: %v", err)
 			os.Exit(-1)
 		}
@@ -43,7 +45,7 @@ func main() {
 	// init
 	if prompt.ForBool("Initialize project?") {
 		usr := prompt.ForString("GitHub org or username?", "me")
-		if err := project.Initialize(ctx, usr, app); err != nil {
+		if err := project.Initialize(ctx, targetDir, usr, app); err != nil {
 			prompt.Print("Error initializing project: %v", err)
 			os.Exit(-1)
 		}

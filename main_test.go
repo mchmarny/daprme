@@ -25,7 +25,7 @@ func getTestApp(t string) (app *model.App, err error) {
 	return a, nil
 }
 
-func TestIntegration(t *testing.T) {
+func TestIntegrations(t *testing.T) {
 	app, err := getTestApp("grpc")
 	if err != nil {
 		t.FailNow()
@@ -46,19 +46,20 @@ func TestIntegration(t *testing.T) {
 }
 
 func testIntegration(t *testing.T, app *model.App) {
+	testTargetDir := "./test"
 	ctx := context.Background()
-	if err := project.Make(ctx, app); err != nil {
+	if err := project.Make(ctx, app, testTargetDir); err != nil {
 		t.Logf("Error making project: %v", err)
 		t.FailNow()
 	}
 
-	if err := project.Initialize(ctx, "test", app); err != nil {
+	if err := project.Initialize(ctx, testTargetDir, "test", app); err != nil {
 		t.Logf("Error initializing project: %v", err)
 		t.FailNow()
 	}
 }
 
-func TestMarshaling(t *testing.T) {
+func TestAppMarshaling(t *testing.T) {
 	app, err := getTestApp("http")
 	if err != nil {
 		t.FailNow()
@@ -82,13 +83,10 @@ func testMarshaling(t *testing.T, app *model.App) {
 		t.Logf("Error marshaling app: %v", err)
 		t.FailNow()
 	}
-
 	t.Logf("\n%s", b2)
-
 	app2, err := model.Unmarshal(b2)
 	if err != nil {
 		t.FailNow()
 	}
-
 	assert.Equal(t, app.Meta, app2.Meta)
 }

@@ -1,5 +1,5 @@
 APP_NAME         =daprme
-RELEASE_VERSION  =v0.4.1
+RELEASE_VERSION  =v0.4.2
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
 all: help
@@ -55,9 +55,7 @@ goclean: clean ## Cleans bin and temp directories
 
 .PHONY: clean
 clean: ## Cleans test dir
-	rm -fr ./my-cli-app
-	rm -fr ./my-http-app
-	rm -fr ./my-grpc-app
+	rm -fr ./test
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk \
