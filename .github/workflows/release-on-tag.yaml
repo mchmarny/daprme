@@ -109,7 +109,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            Automatic release ${{ github.ref }}
+            Automatically generated... notes are coming.
           draft: false
           prerelease: false
 
