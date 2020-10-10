@@ -15,7 +15,7 @@ jobs:
       GOOS: ${{ matrix.target_os }}
       GOARCH: ${{ matrix.target_arch }}
       GOPROXY: https://proxy.golang.org
-      ARCHIVE_OUTDIR: ./release
+      ARCHIVE_OUTDIR: dist/archives
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
@@ -45,7 +45,6 @@ jobs:
         go-version: ${{ env.GOVER }}
 
     - name: Checkout
-      id: setup
       uses: actions/checkout@v2
 
     - name: Cache
@@ -96,11 +95,18 @@ jobs:
       ARTIFACT_DIR: ./release
     runs-on: ubuntu-latest
     steps:
+
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
           name: daprme-artifacts
           path: ${{ env.ARTIFACT_DIR }}
+
+      - name: Set Release Version
+        run: |
+          REL_VER=$(echo ${GITHUB_REF:10})
+          echo "REL_VERSION=${REL_VER}" >> $GITHUB_ENV
+
       - name: Upload Binaries
         if: startswith(github.ref, 'refs/tags/v')
         run: |
