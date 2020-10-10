@@ -1,5 +1,5 @@
 APP_NAME         =daprme
-RELEASE_VERSION  =v0.4.3
+RELEASE_VERSION  =v0.4.4
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
 all: help
