@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/dapr-templates/daprme/pkg/project"
+	"github.com/dapr-templates/daprme/pkg/lang"
 	"github.com/dapr-templates/daprme/pkg/prompt"
 )
 
@@ -30,29 +30,23 @@ func main() {
 		os.Exit(-1)
 	}
 
+	// git
+	prompt.Header("GitHub")
+	usr := prompt.ForString("Organization or username?", "me")
+
 	// review
 	prompt.Header("Review")
 	prompt.Content(app)
 
 	// create
 	if prompt.ForBool("Create project?") {
-		if err := project.Make(ctx, app, targetDir); err != nil {
+		if err := lang.Make(ctx, app, usr, targetDir); err != nil {
 			prompt.Print("Error creating project: %v", err)
 			os.Exit(-1)
 		}
 	}
 
 	prompt.Print("➜ Project was created in: %s", app.Meta.Name)
-
-	// init
-	if prompt.ForBool("Initialize project?") {
-		usr := prompt.ForString("GitHub org or username?", "me")
-		if err := project.Initialize(ctx, targetDir, usr, app); err != nil {
-			prompt.Print("Error initializing project: %v", err)
-			os.Exit(-1)
-		}
-	}
-
 	prompt.Header("✓ Done, Happy Dapring")
 	os.Exit(0)
 }

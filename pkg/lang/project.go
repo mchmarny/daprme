@@ -1,4 +1,4 @@
-package project
+package lang
 
 import (
 	"context"
@@ -6,7 +6,6 @@ import (
 	"os"
 	"path"
 
-	"github.com/dapr-templates/daprme/pkg/lang"
 	"github.com/dapr-templates/daprme/pkg/model"
 	"github.com/pkg/errors"
 )
@@ -18,9 +17,18 @@ const (
 )
 
 // Make creates project
-func Make(ctx context.Context, app *model.App, dir string) error {
+func Make(ctx context.Context, app *model.App, usr, dir string) error {
 	if app == nil {
-		return errors.Errorf("App instance required.")
+		return errors.Errorf("app instance required")
+	}
+	if usr == "" {
+		return errors.Errorf("user required")
+	}
+
+	// lang
+	langProvider, err := MakeConfigurable(app.Meta.Lang)
+	if err != nil {
+		return errors.Wrap(err, "Error initializing language")
 	}
 
 	// create directories
@@ -34,29 +42,18 @@ func Make(ctx context.Context, app *model.App, dir string) error {
 		return errors.Wrapf(err, "Error creating config dir: %s.", configDir)
 	}
 
+	projectConfig := langProvider.GetProjectConfig()
+	if projectConfig == nil {
+		return errors.Wrap(err, "Unable to create project config provider.")
+	}
+
 	// run templates
-	makefilePath := path.Join(outDir, "Makefile")
-	templateMakePath := path.Join(templateDir, app.Meta.Lang, "make.tmpl")
-	if err := execTemplate(app, makefilePath, templateMakePath); err != nil {
-		return errors.Wrap(err, "Error creating makefile.")
-	}
-
-	mainPath := path.Join(outDir, app.Meta.Main)
-	templateMainPath := path.Join(templateDir, app.Meta.Lang, "main.tmpl")
-	if err := execTemplate(app, mainPath, templateMainPath); err != nil {
-		return errors.Wrapf(err, "Error creating %s", mainPath)
-	}
-
-	dockerPath := path.Join(outDir, "Dockerfile")
-	templateDockerPath := path.Join(templateDir, app.Meta.Lang, "docker.tmpl")
-	if err := execTemplate(app, dockerPath, templateDockerPath); err != nil {
-		return errors.Wrap(err, "Error creating dockerfile.")
-	}
-
-	ignorePath := path.Join(outDir, ".gitignore")
-	templateIgnorePath := path.Join(templateDir, app.Meta.Lang, "ignore.tmpl")
-	if err := execTemplate(app, ignorePath, templateIgnorePath); err != nil {
-		return errors.Wrap(err, "Error creating ignorefile.")
+	for k, v := range projectConfig.Templates {
+		makefilePath := path.Join(outDir, v)
+		templateMakePath := path.Join(templateDir, app.Meta.Lang, k)
+		if err := execTemplate(app, makefilePath, templateMakePath); err != nil {
+			return errors.Wrapf(err, "Error executing template: %s", templateMakePath)
+		}
 	}
 
 	// components
@@ -80,21 +77,7 @@ func Make(ctx context.Context, app *model.App, dir string) error {
 		}
 	}
 
-	return nil
-}
-
-// Initialize initializes project
-func Initialize(ctx context.Context, dir, usr string, app *model.App) error {
-	if app == nil {
-		return errors.Errorf("app instance required")
-	}
-	if usr == "" {
-		return errors.Errorf("user required")
-	}
-	langProvider, err := lang.MakeConfigurable(app.Meta.Lang)
-	if err != nil {
-		return errors.Wrap(err, "Error initializing language")
-	}
+	// init
 	if err := langProvider.InitializeProject(ctx, dir, usr, app.Meta.Name); err != nil {
 		return errors.Wrap(err, "Error initializing project")
 	}

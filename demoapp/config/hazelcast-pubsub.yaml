@@ -1,0 +1,9 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: hazelcast-pubsub
+spec:
+  type: pubsub.hazelcast
+  metadata:
+  - name: hazelcastServers
+    value: <REPLACE-WITH-HOSTS> # Required. A comma delimited string of servers. Example: "hazelcast:3000,hazelcast2:3000"

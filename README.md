@@ -15,6 +15,7 @@ Currently supported application types:
 Currently supported development languages: 
 
 * Go 
+* Node.js (under development)
 
 > The `daprme` wizard is template driven, PRs with support for other languages welcomed
 
@@ -42,14 +43,7 @@ daprme
 
 To learn about ways you can contribute and how to setup your development environment check the [CONTRIBUTING.md](./CONTRIBUTING.md) doc. 
 
-The best place to start is adding support for additional languages. `daprme` is uses Go templating, so adding addition language support is as simple as providing language specific templates in the [template](./template) directory:
-
-* `main.tmpl` - the code implementing CLI, gRPC, or HTTP application 
-* `docker.tmpl` - Dockerfile to containerize the application 
-* `ignore.tmpl` - the git ignore file for that specific language 
-* `make.tmpl` - automation to perform the most common tasks like `test`, `build image`, or `dapr run`
-
-You can use any value from the context `daprme` passes to these templates. Here is an example of a context resulting from the user selecting a gRPC service application type in Go:
+The best place to start is adding support for additional languages. `daprme` is uses Go templating, so adding addition language support is as simple as providing language specific templates in the [template](./template) directory. In the template, you can use any value from the context `daprme` passes to these templates. Here is an example of a context resulting from the user selecting a gRPC service application type in Go:
 
 ```yaml
 Meta:
@@ -76,7 +70,7 @@ Components:
   Name: redis-store
 ```
 
-In addition, you need to implement the language specific project initialization steps in [pkg/lang](./pkg/lang) package. This can wrap as many steps as you need to ensure that the resulting project is ready for user to start developing. 
+In addition, you will need to implement the language specific provider interface `Configurable` in [pkg/lang](./pkg/lang) package. It lists the templates and provides language specific configuration. 
 
 > When possible, ame for runnable project vs advanced features that require users to perform additional "plumbing" steps. 
 

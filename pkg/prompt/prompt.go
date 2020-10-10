@@ -14,8 +14,6 @@ const (
 	sectionLength      = 80
 	morePrompt         = "Add another?"
 	appNameDefault     = "my-app"
-	httpPortDefault    = 8080
-	grpcPortDefault    = 50505
 	promptPrefix       = "\n\u2B95  "
 	outOfRangeMessage  = "Selection out of range, try again."
 	formatErrorMessage = "Invalid input, try again."
@@ -32,12 +30,6 @@ func Start(ctx context.Context) (app *model.App, err error) {
 
 	// app type
 	app.Meta.Type = ForOption("App type: ", model.GetAppTypes()...)
-	switch app.Meta.Type {
-	case model.AppTypeGRPC:
-		app.Meta.Port = grpcPortDefault
-	case model.AppTypeHTTP:
-		app.Meta.Port = httpPortDefault
-	}
 
 	// lang
 	app.Meta.Lang = ForOption("Language: ", lang.GetLangs()...)
@@ -50,7 +42,12 @@ func Start(ctx context.Context) (app *model.App, err error) {
 
 	// port
 	if app.Meta.Type != model.AppTypeCLI {
-		app.Meta.Port = ForInt("App port: ", app.Meta.Port)
+		switch app.Meta.Type {
+		case model.AppTypeGRPC:
+			app.Meta.Port = ForInt("App port: ", projectConfig.PortGRPC)
+		case model.AppTypeHTTP:
+			app.Meta.Port = ForInt("App port: ", projectConfig.PortHTTP)
+		}
 	}
 
 	Header("Pub/Sub")

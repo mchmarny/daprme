@@ -1,5 +1,5 @@
 APP_NAME         =daprme
-RELEASE_VERSION  =v0.4.9
+RELEASE_VERSION  =v0.5.1
 LINTER_VERSION   =v1.31.0
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
@@ -20,7 +20,7 @@ tidy: ## Updates the go modules and vendors all dependancies
 
 .PHONY: res
 res: ## Compiles resource files into binary data resource 
-	go-bindata -pkg project -o pkg/project/resource.go template/...
+	go-bindata -pkg lang -o pkg/lang/resource.go template/...
 
 .PHONY: test
 test: clean res ## Tests the entire project 
