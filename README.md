@@ -43,7 +43,7 @@ daprme
 
 To learn about ways you can contribute and how to setup your development environment check the [CONTRIBUTING.md](./CONTRIBUTING.md) doc. 
 
-The best place to start is adding support for additional languages. `daprme` is uses Go templating, so adding addition language support is as simple as providing language specific templates in the [template](./template) directory. In the template, you can use any value from the context `daprme` passes to these templates. Here is an example of a context resulting from the user selecting a gRPC service application type in Go:
+The best place to start is adding support for additional languages. `daprme` is uses Go templating, so adding addition language support is as simple as providing language specific templates in the [template](./template) directory. In the template, you can use any value from the context `daprme` passes to these templates. Here is an example of a context resulting from the user selecting a gRPC service application type in Go with a couple of components:
 
 ```yaml
 Meta:
