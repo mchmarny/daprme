@@ -5,11 +5,8 @@ import (
 )
 
 // ForService collects service info
-func ForService() (*model.Service, error) {
+func ForService() *model.Service {
 	s := &model.Service{}
-
-	// service name
 	s.Name = ForString("Service name: ", "myService")
-
-	return s, nil
+	return s
 }

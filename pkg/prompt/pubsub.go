@@ -9,7 +9,7 @@ import (
 )
 
 // ForPubSub collects pubsub info
-func ForPubSub() (*model.PubSub, error) {
+func ForPubSub() *model.PubSub {
 	ps := &model.PubSub{}
 	fmt.Println("What type of pub/sub component:")
 	list := model.PubsubComponentTypes()
@@ -30,5 +30,5 @@ func ForPubSub() (*model.PubSub, error) {
 	ps.Name = ForString("Component name: ", fmt.Sprintf("%s-pubsub", codeSafeString(list[i])))
 	ps.Topic = ForString("Topic name: ", "messages")
 
-	return ps, nil
+	return ps
 }

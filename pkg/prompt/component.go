@@ -6,11 +6,10 @@ import (
 	"os"
 
 	"github.com/dapr-templates/daprme/pkg/model"
-	"github.com/pkg/errors"
 )
 
 // ForComponents collects client component info
-func ForComponents(list []string, suffix, comp string) ([]*model.Component, error) {
+func ForComponents(list []string, suffix, comp string) []*model.Component {
 	out := make([]*model.Component, 0)
 	for i, o := range list {
 		fmt.Printf(" [%2d]: %s\n", i, o)
@@ -21,7 +20,8 @@ func ForComponents(list []string, suffix, comp string) ([]*model.Component, erro
 	for {
 		i := readInt(reader, 0)
 		if i < 0 || i >= len(list) {
-			return nil, errors.Errorf("input out of range: %d", i)
+			fmt.Println(outOfRangeMessage)
+			return ForComponents(list, suffix, comp)
 		}
 
 		c := &model.Component{
@@ -30,11 +30,9 @@ func ForComponents(list []string, suffix, comp string) ([]*model.Component, erro
 		}
 
 		out = append(out, c)
-
 		if !ForBool("Add more?") {
 			break
 		}
 	}
-
-	return out, nil
+	return out
 }

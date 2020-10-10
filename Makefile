@@ -15,7 +15,7 @@ res: ## Compiles resource files into binary data resource
 
 .PHONY: test
 test: clean res ## Tests the entire project 
-	go test -v -count=1 -race ./...
+	go test -count=1 -race ./...
 
 .PHONY: cover
 cover: clean ## Displays test coverage 

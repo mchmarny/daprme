@@ -13,7 +13,7 @@ const (
 )
 
 // ForBinding collects binding info
-func ForBinding() (*model.Component, error) {
+func ForBinding() *model.Component {
 	b := &model.Component{}
 	fmt.Println("What type of binding component:")
 	list := model.InputBindingComponentTypes()
@@ -33,5 +33,5 @@ func ForBinding() (*model.Component, error) {
 	b.Type = fmt.Sprintf("bindings.%s", list[i])
 	b.Name = ForString("Component name: ", fmt.Sprintf("%s-binding", codeSafeString(list[i])))
 
-	return b, nil
+	return b
 }

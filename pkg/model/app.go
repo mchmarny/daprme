@@ -46,3 +46,12 @@ func Unmarshal(in []byte) (*App, error) {
 	}
 	return &a, nil
 }
+
+// GetAppTypes returns supported app types
+func GetAppTypes() []string {
+	return []string{
+		AppTypeCLI,
+		AppTypeGRPC,
+		AppTypeHTTP,
+	}
+}

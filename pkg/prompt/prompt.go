@@ -28,7 +28,7 @@ func Start(ctx context.Context) (app *model.App, err error) {
 	app.Meta.Name = ForString("Name: ", appNameDefault)
 
 	// app type
-	app.Meta.Type = ForOption("App type: ", model.AppTypeCLI, model.AppTypeGRPC, model.AppTypeHTTP)
+	app.Meta.Type = ForOption("App type: ", model.GetAppTypes()...)
 	switch app.Meta.Type {
 	case model.AppTypeGRPC:
 		app.Meta.Port = grpcPortDefault
@@ -56,11 +56,7 @@ func Start(ctx context.Context) (app *model.App, err error) {
 	if ForBool("Subscribe to topic?") {
 		list := make([]*model.PubSub, 0)
 		for {
-			comp, err := ForPubSub()
-			if err != nil {
-				return nil, errors.Errorf("Error getting pub/sub components: %v.", err)
-			}
-			list = append(list, comp)
+			list = append(list, ForPubSub())
 			if !ForBool(morePrompt) {
 				break
 			}
@@ -76,11 +72,7 @@ func Start(ctx context.Context) (app *model.App, err error) {
 	if ForBool("Use input binding?") {
 		list := make([]*model.Component, 0)
 		for {
-			comp, err := ForBinding()
-			if err != nil {
-				return nil, errors.Errorf("Error getting binding components: %v.", err)
-			}
-			list = append(list, comp)
+			list = append(list, ForBinding())
 			if !ForBool(morePrompt) {
 				break
 			}
@@ -96,12 +88,7 @@ func Start(ctx context.Context) (app *model.App, err error) {
 	if ForBool("Enable service invocation?") {
 		list := make([]*model.Service, 0)
 		for {
-			comp, err := ForService()
-			if err != nil {
-				return nil, errors.Errorf("Error getting service: %v.", err)
-			}
-			list = append(list, comp)
-
+			list = append(list, ForService())
 			if !ForBool(morePrompt) {
 				break
 			}
@@ -116,10 +103,7 @@ func Start(ctx context.Context) (app *model.App, err error) {
 	// secret
 	app.Components = make([]*model.Component, 0)
 	if ForBool("Use secrets?") {
-		secretComp, err := ForComponents(model.SecretComponentTypes(), "secret", "secretstores")
-		if err != nil {
-			return nil, errors.Errorf("Error parsing answer: %v.", err)
-		}
+		secretComp := ForComponents(model.SecretComponentTypes(), "secret", "secretstores")
 		app.Components = append(app.Components, secretComp...)
 	}
 
@@ -128,36 +112,24 @@ func Start(ctx context.Context) (app *model.App, err error) {
 	// client
 	app.Meta.UsesClient = ForBool("Uses Dapr client?")
 	if app.Meta.UsesClient {
-
 		// state
 		if ForBool("Add state components?") {
-			stateComp, err := ForComponents(model.StateComponentTypes(), "store", "state")
-			if err != nil {
-				return nil, errors.Errorf("Error parsing answer: %v.", err)
-			}
+			stateComp := ForComponents(model.StateComponentTypes(), "store", "state")
 			app.Components = append(app.Components, stateComp...)
 		}
 
 		// pubsub
 		if ForBool("Add pub/sub components?") {
-			pubsubComp, err := ForComponents(model.PubsubComponentTypes(), "pubsub", "pubsub")
-			if err != nil {
-				return nil, errors.Errorf("Error parsing answer: %v.", err)
-			}
+			pubsubComp := ForComponents(model.PubsubComponentTypes(), "pubsub", "pubsub")
 			app.Components = append(app.Components, pubsubComp...)
 		}
 
 		// binding
 		if ForBool("Add output binding components?") {
-			outBindComp, err := ForComponents(model.OutputBindingComponentTypes(), "binding", "bindings")
-			if err != nil {
-				return nil, errors.Errorf("Error parsing answer: %v.", err)
-			}
+			outBindComp := ForComponents(model.OutputBindingComponentTypes(), "binding", "bindings")
 			app.Components = append(app.Components, outBindComp...)
 		}
-
 	}
-
 	return
 }
 
