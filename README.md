@@ -1,8 +1,6 @@
 # daprme
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/dapr-templates/daprme)](https://goreportcard.com/report/github.com/dapr-templates/daprme)
-[![Build Status](https://github.com/dapr-templates/daprme/workflows/Test/badge.svg)](https://github.com/dapr-templates/daprme/actions?workflow=Test)
-[![codecov](https://codecov.io/gh/dapr-templates/daprme/branch/master/graph/badge.svg)](https://codecov.io/gh/dapr-templates/daprme)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dapr-templates/daprme)](https://goreportcard.com/report/github.com/dapr-templates/daprme) ![Test](https://github.com/dapr-templates/daprme/workflows/Test/badge.svg) ![Release](https://github.com/dapr-templates/daprme/workflows/Release/badge.svg) [![codecov](https://codecov.io/gh/dapr-templates/daprme/branch/master/graph/badge.svg)](https://codecov.io/gh/dapr-templates/daprme)
 
 This new app wizard CLI guides you through the creation of a new Dapr project. Including the Dapr component selection and scaffolding of a new application.
 
