@@ -29,6 +29,11 @@ func (g *Golang) InitializeProject(ctx context.Context, dir, usr, app string) er
 		return err
 	}
 
+	// ensure goimports
+	if err := execCmd(appDir, "go", "get", "golang.org/x/tools/cmd/goimports"); err != nil {
+		return err
+	}
+
 	// remove unused imports and format the code
 	if err := execCmd(appDir, "goimports", "-w", "main.go"); err != nil {
 		return err
