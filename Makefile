@@ -41,6 +41,10 @@ build: clean tidy res ## Builds binaries
 	cp ./bin/$(APP_NAME) /usr/local/bin/daprme
 .PHONY: build
 
+install: tidy res ## Installs locally 
+	CGO_ENABLED=0 go install -ldflags "-X main.Version=$(RELEASE_VERSION)" .
+.PHONY: install
+
 release: clean tidy res ## Builds releases
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.Version=$(RELEASE_VERSION)" -mod vendor -o release/$(APP_NAME) .
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-X main.Version=$(RELEASE_VERSION)" -mod vendor -o release/$(APP_NAME)_linux .
