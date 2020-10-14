@@ -22,8 +22,6 @@ Currently supported development languages:
 
 ## Installation
 
-The `daprme` CLI includes support for OSes (architecture support coming soon)
-
 1. Download the latest [daprme](https://github.com/dapr-templates/daprme/releases/latest) release for your OS
 2. Move it to your desired in PATH location
    * For Linux/MacOS - `/usr/local/bin`
