@@ -22,6 +22,15 @@ Currently supported development languages:
 
 ## Installation
 
+### Mac OS using Homebrew
+
+```sh
+brew tap dapr-templates/daprme
+brew install dapr-templates/daprme/daprme
+```
+
+### Other
+
 1. Download the latest [daprme](https://github.com/dapr-templates/daprme/releases/latest) release for your OS
 2. Move it to your desired in PATH location
    * For Linux/MacOS - `/usr/local/bin`
