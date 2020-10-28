@@ -16,7 +16,7 @@ var (
 	// Version will be overritten during build
 	Version = "v0.0.1-default"
 
-	daprVersion = "v0.11.2"
+	daprVersion = "v0.11.3"
 	targetDir   = ""
 	sourceFile  = ""
 )
