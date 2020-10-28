@@ -1,9 +1,0 @@
-node_modules
-.dockerfiles
-
-# mac
-.DS_Store
-
-
-# secrets 
-.secrets
