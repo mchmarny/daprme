@@ -1,5 +1,5 @@
 APP_NAME         =daprme
-RELEASE_VERSION  =v0.5.1
+RELEASE_VERSION  =v0.6.0
 LINTER_VERSION   =v1.31.0
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
@@ -30,7 +30,7 @@ cover: clean ## Displays test coverage
 	go test -coverprofile=coverage.out ./... && go tool cover -mode=atomic -html=coverage.out
 .PHONY: cover
 
-run: clean tidy ## Runs uncompiled code 
+run: clean tidy res ## Runs uncompiled code 
 	go run main.go
 .PHONY: run
 
@@ -38,7 +38,6 @@ build: clean tidy res ## Builds binaries
 	CGO_ENABLED=0 go build \
 		-ldflags "-X main.Version=$(RELEASE_VERSION)" \
 		-mod vendor -o bin/$(APP_NAME) .
-	cp ./bin/$(APP_NAME) /usr/local/bin/daprme
 .PHONY: build
 
 install: tidy res ## Installs locally 

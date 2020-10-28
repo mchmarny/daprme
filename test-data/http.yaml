@@ -4,6 +4,7 @@ Meta:
   Lang: node
   Main: app.js
   Port: 3000
+  Owner: test
 Bindings:
 - Type: bindings.cron
   Name: cron-binding

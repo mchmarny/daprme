@@ -17,11 +17,11 @@ const (
 )
 
 // Make creates project
-func Make(ctx context.Context, app *model.App, usr, dir string) error {
+func Make(ctx context.Context, app *model.App, dir string) error {
 	if app == nil {
 		return errors.Errorf("app instance required")
 	}
-	if usr == "" {
+	if app.Meta.Owner == "" {
 		return errors.Errorf("user required")
 	}
 
@@ -56,6 +56,13 @@ func Make(ctx context.Context, app *model.App, usr, dir string) error {
 		}
 	}
 
+	// app config
+	tmplPath := path.Join(templateDir, templateCompDir, "configuration.tmpl")
+	outPath := path.Join(configDir, "app.yaml")
+	if err := execTemplate(app, outPath, tmplPath); err != nil {
+		return errors.Wrap(err, "Error creating config component.")
+	}
+
 	// components
 	for _, c := range app.Bindings {
 		if err := addComponent(c, configDir); err != nil {
@@ -78,7 +85,7 @@ func Make(ctx context.Context, app *model.App, usr, dir string) error {
 	}
 
 	// init
-	if err := langProvider.InitializeProject(ctx, dir, usr, app.Meta.Name); err != nil {
+	if err := langProvider.InitializeProject(ctx, dir, app); err != nil {
 		return errors.Wrap(err, "Error initializing project")
 	}
 	return nil

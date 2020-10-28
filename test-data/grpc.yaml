@@ -5,6 +5,7 @@ Meta:
   Main: main.go
   Port: 50050
   UsesClient: true
+  Owner: test
 PubSubs:
 - Type: pubsub.redis
   Name: redis-pubsub

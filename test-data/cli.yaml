@@ -4,6 +4,7 @@ Meta:
   Lang: go
   Main: main.go
   UsesClient: true
+  Owner: test
 Components:
 - Type: secretstores.local.env
   Name: localenv-secret

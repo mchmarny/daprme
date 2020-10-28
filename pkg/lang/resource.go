@@ -27,6 +27,7 @@
 // template/component/bindings.twilio.sendgrid.tmpl
 // template/component/bindings.twilio.sms.tmpl
 // template/component/bindings.twitter.tmpl
+// template/component/configuration.tmpl
 // template/component/pubsub.azure.eventhubs.tmpl
 // template/component/pubsub.azure.servicebus.tmpl
 // template/component/pubsub.gcp.pubsub.tmpl
@@ -684,6 +685,26 @@ func templateComponentBindingsTwitterTmpl() (*asset, error) {
 	}
 
 	info := bindataFileInfo{name: "template/component/bindings.twitter.tmpl", size: 495, mode: os.FileMode(420), modTime: time.Unix(1602244129, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
+var _templateComponentConfigurationTmpl = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x2c\x8b\xb1\xce\xc2\x30\x0c\x06\xf7\x3c\x85\xd5\xfd\xef\xaf\xae\x59\x99\x61\x60\x60\xff\x94\xb8\xc5\xa2\x71\xac\xc4\x65\xa9\xfa\xee\xa8\x88\xed\xa4\xbb\x83\xc9\x83\x5b\x97\xaa\x91\x32\xac\x8d\x52\xff\xdf\x13\x56\x7b\x62\x0a\x2f\xd1\x1c\xe9\x52\x75\x96\x65\x6b\x70\xa9\x1a\x0a\x3b\x32\x1c\x31\x10\x29\x0a\x47\xda\xf7\xf1\xca\x8e\xf1\x86\xc2\xc7\xf1\x97\xbe\xf9\xcf\x76\x43\xe2\x48\x99\x67\x6c\xab\x87\x6e\x9c\xce\xd1\x1b\x92\xe8\x72\x22\x51\x47\xb1\x55\x74\xb9\xc3\x39\xd2\x30\x0d\x9f\x00\x00\x00\xff\xff\xdf\xd6\x1a\x78\x94\x00\x00\x00")
+
+func templateComponentConfigurationTmplBytes() ([]byte, error) {
+	return bindataRead(
+		_templateComponentConfigurationTmpl,
+		"template/component/configuration.tmpl",
+	)
+}
+
+func templateComponentConfigurationTmpl() (*asset, error) {
+	bytes, err := templateComponentConfigurationTmplBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "template/component/configuration.tmpl", size: 148, mode: os.FileMode(420), modTime: time.Unix(1603888015, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -1667,6 +1688,7 @@ var _bindata = map[string]func() (*asset, error){
 	"template/component/bindings.twilio.sendgrid.tmpl":        templateComponentBindingsTwilioSendgridTmpl,
 	"template/component/bindings.twilio.sms.tmpl":             templateComponentBindingsTwilioSmsTmpl,
 	"template/component/bindings.twitter.tmpl":                templateComponentBindingsTwitterTmpl,
+	"template/component/configuration.tmpl":                   templateComponentConfigurationTmpl,
 	"template/component/pubsub.azure.eventhubs.tmpl":          templateComponentPubsubAzureEventhubsTmpl,
 	"template/component/pubsub.azure.servicebus.tmpl":         templateComponentPubsubAzureServicebusTmpl,
 	"template/component/pubsub.gcp.pubsub.tmpl":               templateComponentPubsubGcpPubsubTmpl,
@@ -1784,6 +1806,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 			"bindings.twilio.sendgrid.tmpl":        &bintree{templateComponentBindingsTwilioSendgridTmpl, map[string]*bintree{}},
 			"bindings.twilio.sms.tmpl":             &bintree{templateComponentBindingsTwilioSmsTmpl, map[string]*bintree{}},
 			"bindings.twitter.tmpl":                &bintree{templateComponentBindingsTwitterTmpl, map[string]*bintree{}},
+			"configuration.tmpl":                   &bintree{templateComponentConfigurationTmpl, map[string]*bintree{}},
 			"pubsub.azure.eventhubs.tmpl":          &bintree{templateComponentPubsubAzureEventhubsTmpl, map[string]*bintree{}},
 			"pubsub.azure.servicebus.tmpl":         &bintree{templateComponentPubsubAzureServicebusTmpl, map[string]*bintree{}},
 			"pubsub.gcp.pubsub.tmpl":               &bintree{templateComponentPubsubGcpPubsubTmpl, map[string]*bintree{}},

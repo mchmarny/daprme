@@ -32,9 +32,7 @@ brew install dapr-templates/daprme/daprme
 ### Other
 
 1. Download the latest [daprme](https://github.com/dapr-templates/daprme/releases/latest) release for your OS
-2. Move it to your desired in PATH location
-   * For Linux/MacOS - `/usr/local/bin`
-   * For Windows, create a directory and add this to your System PATH
+2. Move it to your desired in PATH location (e.g. `/usr/local/bin`)
 
 ## Usage 
 
@@ -46,11 +44,21 @@ Run `daprme` and follow the prompts
 daprme
 ```
 
-## Adding Language Support 
+To specify the output directory (defaults to current), provide the `--out` flag, for example:
 
-To learn about ways you can contribute and how to setup your development environment check the [CONTRIBUTING.md](./CONTRIBUTING.md) doc. 
+```shell
+daprme --out ~/Downloads
+```
 
-The best place to start is adding support for additional languages. `daprme` is uses Go templating, so adding addition language support is as simple as providing language specific templates in the [template](./template) directory. In the template, you can use any value from the context `daprme` passes to these templates. Here is an example of a context resulting from the user selecting a gRPC service application type in Go with a couple of components:
+To re-use an existing app manifest provide the `--file` flag, for example:
+
+```shell
+daprme --file ~/dapr-templates/my-common-app.yaml
+```
+
+Here is an example of an app template for a gRPC service application type in Go with a couple of components:
+
+> The `daprme` prompt will guide you through template definition and output resulting manifest at the end, so no need to write any YAML by hand. 
 
 ```yaml
 Meta:
@@ -60,6 +68,7 @@ Meta:
   Main: main.go
   Port: 50050
   UsesClient: true
+  Owner: mchmarny
 PubSubs:
 - Type: pubsub.redis
   Name: redis-pubsub
@@ -77,9 +86,15 @@ Components:
   Name: redis-store
 ```
 
+## Adding Language Support 
+
+To learn about ways you can contribute and how to setup your development environment check the [CONTRIBUTING.md](./CONTRIBUTING.md) doc. 
+
+The best place to start is adding support for additional languages. `daprme` is uses Go templating, so adding addition language support is as simple as providing language specific templates in the [template](./template) directory. In the template, you can use any value from the context `daprme` passes to these templates.
+
 In addition, you will need to implement the language specific provider interface `Configurable` in [pkg/lang](./pkg/lang) package. It lists the templates and provides language specific configuration. 
 
-> When possible, ame for runnable project vs advanced features that require users to perform additional "plumbing" steps. 
+> When possible, aim for runnable project vs advanced features that require users to perform additional "plumbing" steps. 
 
 ## Code of Conduct
 

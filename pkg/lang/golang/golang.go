@@ -33,10 +33,10 @@ func (g *Golang) GetProjectConfig() *model.Project {
 }
 
 // InitializeProject initializes project
-func (g *Golang) InitializeProject(ctx context.Context, dir, usr, app string) error {
+func (g *Golang) InitializeProject(ctx context.Context, dir string, app *model.App) error {
 	// init the modules
-	appDir := path.Join(dir, app)
-	m := fmt.Sprintf("github.com/%s/%s", usr, app)
+	appDir := path.Join(dir, app.Meta.Name)
+	m := fmt.Sprintf("github.com/%s/%s", app.Meta.Owner, app.Meta.Name)
 	if err := cmd.Exec(appDir, "go", "mod", "init", m); err != nil {
 		return err
 	}

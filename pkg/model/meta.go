@@ -8,4 +8,5 @@ type Meta struct {
 	Main       string `yaml:"Main"`
 	Port       int    `yaml:"Port"`
 	UsesClient bool   `yaml:"UsesClient"`
+	Owner      string `yaml:"Owner"`
 }
