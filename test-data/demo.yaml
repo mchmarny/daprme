@@ -1,0 +1,24 @@
+Meta:
+  Name: daprme-demo-app
+  Type: gRPC
+  Lang: go
+  Main: main.go
+  Port: 50505
+  UsesClient: true
+  Owner: mchmarny
+PubSubs:
+- Name: redis-pubsub
+  Type: pubsub.redis
+  Topic: messages
+Bindings:
+- Name: cron-binding
+  Type: bindings.cron
+Services:
+- Name: myService
+Components:
+- Name: localenv-secret
+  Type: secretstores.local.env
+- Name: redis-store
+  Type: state.redis
+- Name: http-binding
+  Type: bindings.http

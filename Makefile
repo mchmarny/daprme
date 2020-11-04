@@ -34,6 +34,10 @@ run: clean tidy res ## Runs uncompiled code
 	go run main.go
 .PHONY: run
 
+demo: clean tidy res ## Runs uncompiled code with manifest 
+	go run main.go --file test-data/demo.yaml --out ./my-app
+.PHONY: demo
+
 build: clean tidy res ## Builds binaries
 	CGO_ENABLED=0 go build \
 		-ldflags "-X main.Version=$(RELEASE_VERSION)" \

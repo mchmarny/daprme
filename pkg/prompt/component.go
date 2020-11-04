@@ -12,21 +12,22 @@ import (
 func ForComponents(list []string, suffix, comp string) []*model.Component {
 	out := make([]*model.Component, 0)
 	for i, o := range list {
-		fmt.Printf(" [%2d]: %s\n", i, o)
+		fmt.Printf(" [%2d]: %s\n", i+1, o)
 	}
 	fmt.Println()
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		i := readInt(reader, 0)
-		if i < 0 || i >= len(list) {
+		if i < 1 || i > len(list) {
 			fmt.Println(outOfRangeMessage)
 			return ForComponents(list, suffix, comp)
 		}
 
+		selected := list[i-1]
 		c := &model.Component{
-			Name: fmt.Sprintf("%s-%s", codeSafeString(list[i]), suffix),
-			Type: fmt.Sprintf("%s.%s", comp, list[i]),
+			Name: fmt.Sprintf("%s-%s", codeSafeString(selected), suffix),
+			Type: fmt.Sprintf("%s.%s", comp, selected),
 		}
 
 		out = append(out, c)

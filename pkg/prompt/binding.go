@@ -14,20 +14,21 @@ func ForBinding() *model.Component {
 	fmt.Println("What type of binding component:")
 	list := model.InputBindingComponentTypes()
 	for i, o := range list {
-		fmt.Printf(" [%2d]: %s\n", i, o)
+		fmt.Printf(" [%2d]: %s\n", i+1, o)
 	}
 	fmt.Println()
 
 	reader := bufio.NewReader(os.Stdin)
 	i := readInt(reader, 0)
-	if i < 0 || i >= len(list) {
+	if i < 1 || i > len(list) {
 		fmt.Println(outOfRangeMessage)
 		return ForBinding()
 	}
 
 	// comp name
-	b.Type = fmt.Sprintf("bindings.%s", list[i])
-	b.Name = ForString("Component name: ", fmt.Sprintf("%s-binding", codeSafeString(list[i])))
+	selected := list[i-1]
+	b.Type = fmt.Sprintf("bindings.%s", selected)
+	b.Name = ForString("Component name: ", fmt.Sprintf("%s-binding", codeSafeString(selected)))
 
 	return b
 }

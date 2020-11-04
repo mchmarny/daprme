@@ -1,6 +1,6 @@
 SERVICE_NAME    ?={{.Meta.Name}}
 RELEASE_VERSION ?=v0.1.1
-DOCKER_USERNAME ?=$(DOCKER_USER)
+OWNER_NAME      ?={{.Meta.Owner}}
 
 .PHONY: all
 all: help
@@ -17,33 +17,33 @@ test: tidy ## Tests the entire project
 .PHONY: run
 run: tidy ## Runs un-compiled code in Dapr
 	dapr run \
-		 --app-id $(SERVICE_NAME) \
-		 --app-port {{.Meta.Port}} \
-		 {{- if eq .Meta.Type "HTTP"}}
-		 --app-protocol http \
-		 {{- else if eq .Meta.Type "GRPC"}}
-		 --app-protocol grpc \
-		 {{- end}}
-		 --dapr-http-port 3500 \
-         --components-path ./config \
-         go run main.go
+		--app-id $(SERVICE_NAME) \
+		--app-port {{.Meta.Port}} \
+		{{- if eq .Meta.Type "HTTP"}}
+		--app-protocol http \
+		{{- else if eq .Meta.Type "GRPC"}}
+		--app-protocol grpc \
+		{{- end}}
+		--dapr-http-port 3500 \
+		--components-path ./config \
+		go run main.go
 
 .PHONY: build
 build: tidy ## Builds local release binary
 	CGO_ENABLED=0 go build -a -tags netgo -mod vendor -o bin/$(SERVICE_NAME) .
 
-{{- range $i, $v := .PubSubs}}
+{{range $i, $v := .PubSubs}}
 .PHONY: event{{$v.Name}}
 event{{$v.Name}}: ## Publishes sample JSON message to Dapr pubsub API 
 	curl -d '{ "from": "John", "to": "Lary", "message": "hi" }' \
      -H "Content-type: application/json" \
      "http://localhost:3500/v1.0/publish/{{$v.Name}}/{{$v.Topic}}"
-{{- end}}
+{{end}}
 
 .PHONY: image
 image: tidy ## Builds and publish docker image 
-	docker build -t "$(DOCKER_USERNAME)/$(SERVICE_NAME):$(RELEASE_VERSION)" .
-	docker push "$(DOCKER_USERNAME)/$(SERVICE_NAME):$(RELEASE_VERSION)"
+	docker build -t "$(OWNER_NAME)/$(SERVICE_NAME):$(RELEASE_VERSION)" .
+	docker push "$(OWNER_NAME)/$(SERVICE_NAME):$(RELEASE_VERSION)"
 
 .PHONY: lint
 lint: ## Lints the entire project 
