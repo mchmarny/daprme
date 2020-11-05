@@ -19,8 +19,8 @@ Bindings:
 - Type: bindings.kafka
   Name: kafka-binding
 Services:
-- Name: myService
-- Name: myOtherService
+- Name: myMethod
+- Name: myOtherMethod
 Components:
 - Type: secretstores.local.env
   Name: localenv-secret

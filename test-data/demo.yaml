@@ -1,9 +1,9 @@
 Meta:
-  Name: daprme-demo-app
-  Type: gRPC
+  Name: demo-app
+  Type: HTTP
   Lang: go
   Main: main.go
-  Port: 50505
+  Port: 8080
   UsesClient: true
   Owner: mchmarny
 PubSubs:
@@ -14,7 +14,7 @@ Bindings:
 - Name: cron-binding
   Type: bindings.cron
 Services:
-- Name: myService
+- Name: myMethod
 Components:
 - Name: localenv-secret
   Type: secretstores.local.env

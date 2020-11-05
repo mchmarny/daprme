@@ -1,5 +1,5 @@
 APP_NAME         =daprme
-RELEASE_VERSION  =v0.6.2
+RELEASE_VERSION  =v0.6.3
 LINTER_VERSION   =v1.31.0
 DOCKER_USERNAME ?=$(DOCKER_USER)
 
@@ -35,7 +35,7 @@ run: clean tidy res ## Runs uncompiled code
 .PHONY: run
 
 demo: clean tidy res ## Runs uncompiled code with manifest 
-	go run main.go --file test-data/demo.yaml --out ./my-app
+	go run main.go --file test-data/demo.yaml --out ./apps
 .PHONY: demo
 
 build: clean tidy res ## Builds binaries

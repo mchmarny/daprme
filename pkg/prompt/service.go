@@ -7,6 +7,6 @@ import (
 // ForService collects service info
 func ForService() *model.Service {
 	s := &model.Service{}
-	s.Name = ForString("Service name: ", "myService")
+	s.Name = ForString("Operation name: ", "myMethod")
 	return s
 }

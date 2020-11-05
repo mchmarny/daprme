@@ -9,4 +9,4 @@ Bindings:
 - Type: bindings.cron
   Name: cron-binding
 Services:
-- Name: myService
+- Name: myMethod

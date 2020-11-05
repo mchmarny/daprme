@@ -13,7 +13,7 @@ import (
 	{{- if eq .Meta.Type "gRPC"}}
   	daprd "github.com/dapr/go-sdk/service/grpc"
 	{{- end}}
-	{{- if eq .Meta.Type "GHTTP"}}
+	{{- if eq .Meta.Type "HTTP"}}
 	daprd "github.com/dapr/go-sdk/service/http"
 	{{- end}}
 	{{- if .Meta.UsesClient}}
@@ -67,7 +67,7 @@ func main() {
 		PubsubName: pubSubName{{$i}},
 		Topic:      topicName{{$i}},
 		{{- if eq $.Meta.Type "HTTP"}}
-		Route:      fmt.Sprintf("/%s", topicName),
+		Route:      fmt.Sprintf("/%s", topicName{{$i}}),
 		{{- end}}
 	}
 	if err := s.AddTopicEventHandler(sub{{$i}}, eventHandler); err != nil {
